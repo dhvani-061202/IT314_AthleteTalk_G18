@@ -1,1 +1,1 @@
-# IT314_Software_Engineering_G18
+# IT314_AthleteTalk_G18
