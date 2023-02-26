@@ -1,6 +1,7 @@
 import multer from "multer";
 import nc from "next-connect";
 import fs from "fs";
+import path from "path";
 
 const handler = nc({
   onError: (err, req, res, next) => {
@@ -35,7 +36,7 @@ import { google } from "googleapis";
 
 const authenticateGoogle = () => {
   const auth = new google.auth.GoogleAuth({
-    keyFile: `/public/driveToken.json`,
+    keyFilename: path.resolve("./driveToken.json"),
     scopes: "https://www.googleapis.com/auth/drive",
   });
   return auth;
