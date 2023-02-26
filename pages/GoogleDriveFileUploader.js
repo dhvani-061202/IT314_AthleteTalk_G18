@@ -16,7 +16,7 @@ function GoogleDriveFileUploader() {
     });
 
     const responseWithBody = await response.json();
-    console.log("got response");
+    console.log("got response", responseWithBody);
     if (response) setUrl(responseWithBody.publicUrl);
   };
 
