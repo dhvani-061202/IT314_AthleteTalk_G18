@@ -20,7 +20,7 @@ export const config = {
 
 let storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, `${__dirname}`);
+    callback(null, `/tmp`);
   },
   filename: function (req, file, callback) {
     callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
