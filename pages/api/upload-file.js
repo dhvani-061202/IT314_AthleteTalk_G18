@@ -5,7 +5,7 @@ import fs from "fs";
 const handler = nc({
   onError: (err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ err: "Something broke!" });
+    res.status(500).json({ err: err, errStack: err.stack });
   },
   onNoMatch: (req, res) => {
     res.status(404).json({ err: "Page is not found" });
