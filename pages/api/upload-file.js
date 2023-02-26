@@ -35,7 +35,7 @@ import { google } from "googleapis";
 
 const authenticateGoogle = () => {
   const auth = new google.auth.GoogleAuth({
-    keyFile: `${__dirname}/../../driveToken.json`,
+    keyFile: `/public/driveToken.json`,
     scopes: "https://www.googleapis.com/auth/drive",
   });
   return auth;
