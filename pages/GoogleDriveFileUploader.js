@@ -10,7 +10,7 @@ function GoogleDriveFileUploader() {
     e.preventDefault();
     let formData = new FormData();
     formData.append("file", file.data);
-    const response = await fetch(`${server}/api/upload-file`, {
+    const response = await fetch(`/api/upload-file`, {
       method: "POST",
       body: formData,
     });
