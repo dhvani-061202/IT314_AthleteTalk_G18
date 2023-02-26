@@ -4,7 +4,6 @@ import server from "../server";
 function GoogleDriveFileUploader() {
   const [url, setUrl] = useState("");
   const [file, setFile] = useState(null);
-  console.log(process.env.SERVER);
 
   const handleSubmit = async (e) => {
     console.log("pressed submit");
