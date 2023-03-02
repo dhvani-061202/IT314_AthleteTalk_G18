@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import server from '../server';
+import server from '../../server';
 
-function GoogleDriveFileUploader() {
+function UploadVideo() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
@@ -57,4 +57,4 @@ function GoogleDriveFileUploader() {
   );
 }
 
-export default GoogleDriveFileUploader;
+export default UploadVideo;

@@ -12,16 +12,44 @@ function MyApp({ Component, pageProps }) {
   if (Component.getLayout) {
     return Component.getLayout(<Component {...pageProps} />);
   }
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('Not logged in!');
+      router.push('/login');
+    }
+
+    fetch(`/api/users/details`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status !== 'success') {
+          alert(data.message);
+
+          router.push('/login');
+          return;
+        }
+
+        setUser(data.data.user);
+      });
+  }, []);
 
   return (
     <>
-      {' '}
       <ThemeProvider theme={theme}>
         <ProSidebarProvider>
           <CssBaseline />
-          <AppHeader />
+          <AppHeader user={user} />
           <Box sx={styles.container}>
-            <SideNav />
+            <SideNav user={user} />
             <Box component="main" sx={styles.mainSection}>
               <Component {...pageProps} />
             </Box>

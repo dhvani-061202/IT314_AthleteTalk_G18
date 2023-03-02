@@ -10,9 +10,19 @@ import React from 'react';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import { Logout, Notifications, Settings } from '@mui/icons-material';
 import { useProSidebar } from 'react-pro-sidebar';
+import { useRouter } from 'next/router';
 
 const AppHeader = () => {
+  const router = useRouter();
+
   const { collapseSidebar, toggleSidebar, broken } = useProSidebar();
+  const handleLogout = (e) => {
+    e.preventDefault();
+
+    localStorage.removeItem('token');
+    router.push('/login');
+  };
+
   return (
     <AppBar position="sticky" sx={styles.appBar}>
       <Toolbar>
@@ -32,7 +42,7 @@ const AppHeader = () => {
         <IconButton title="Settings" color="secondary">
           <Settings />
         </IconButton>
-        <IconButton title="Sign Out" color="secondary">
+        <IconButton onClick={handleLogout} title="Sign Out" color="secondary">
           <Logout />
         </IconButton>
       </Toolbar>

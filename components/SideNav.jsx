@@ -5,10 +5,15 @@ import {
   StyleOutlined,
 } from '@mui/icons-material';
 import { Avatar, Box, Typography, useTheme } from '@mui/material';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
 
-const SideNav = () => {
+const SideNav = (props) => {
   const theme = useTheme();
+  const router = useRouter();
+  console.log(router.pathname);
+
   const { collapsed } = useProSidebar();
   return (
     <Sidebar
@@ -23,25 +28,53 @@ const SideNav = () => {
         <Avatar sx={styles.avatar} alt="Channel Name" src="user.svg" />
         {!collapsed && (
           <Typography variant="body2" sx={styles.yourChannel}>
-            Channel Name
+            {props.user ? props.user.name.toUpperCase() : ' '}
           </Typography>
         )}
         {!collapsed && (
           <Typography variant="overline">React with Someone</Typography>
         )}
       </Box>
-      <Menu>
-        <MenuItem active icon={<DashboardOutlined />}>
+      <Menu
+        menuItemStyles={{
+          button: ({ active }) => {
+            return {
+              backgroundColor: active
+                ? theme.palette.neutral.medium
+                : undefined,
+            };
+          },
+        }}
+      >
+        <MenuItem
+          active={router.pathname === '/dashboard'}
+          component={<Link href="/dashboard" />}
+          icon={<DashboardOutlined />}
+        >
           <Typography variant="body2">Dashboard</Typography>
         </MenuItem>
-        <MenuItem icon={<SourceOutlined />}>
-          <Typography variant="body2">Content</Typography>
+        {props.user && props.user.role !== 'user' && (
+          <MenuItem
+            active={router.pathname === '/upload-video'}
+            component={<Link href="/upload-video" />}
+            icon={<SourceOutlined />}
+          >
+            <Typography variant="body2">Upload Video</Typography>
+          </MenuItem>
+        )}
+        <MenuItem
+          active={router.pathname === '/plans'}
+          component={<Link href="/plans" />}
+          icon={<AnalyticsOutlined />}
+        >
+          <Typography variant="body2">Plans</Typography>
         </MenuItem>
-        <MenuItem icon={<AnalyticsOutlined />}>
-          <Typography variant="body2">Analytics</Typography>
-        </MenuItem>
-        <MenuItem icon={<StyleOutlined />}>
-          <Typography variant="body2">Customization</Typography>
+        <MenuItem
+          active={router.pathname === '/community-chat'}
+          component={<Link href="/community-chat" />}
+          icon={<StyleOutlined />}
+        >
+          <Typography variant="body2">Community Chat</Typography>
         </MenuItem>
       </Menu>
     </Sidebar>
