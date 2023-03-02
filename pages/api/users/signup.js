@@ -3,6 +3,7 @@ const dbConnect = require('../../../lib/mongoose');
 const catchAsync = require('../../../utils/catchAsync');
 const User = require('../../../models/userModel');
 const jwt = require('jsonwebtoken');
+const authController = require('./../../../controllers/authController');
 
 handler.post(
   catchAsync(async (req, res, next) => {
@@ -17,17 +18,7 @@ handler.post(
       role: req.body.role,
     });
 
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
-
-    res.status(201).json({
-      status: 'success',
-      token,
-      data: {
-        user: newUser,
-      },
-    });
+    authController.createSendToken(newUser, 201, res);
   })
 );
 

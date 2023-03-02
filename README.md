@@ -2,7 +2,7 @@
 
 - User Login➡️
 - User SignUp🏠
-- User Authentication (using Json Web Token🪙 & Cookies🍪)
+- User Authentication (using Json Web Token🪙)
 - User Authorization🥷 (for deleting and managing videos)
 - Storing encrypted password using bcrypt🔑
 - Uploading videos📽️

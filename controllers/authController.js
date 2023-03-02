@@ -7,14 +7,14 @@ const jwt = require('jsonwebtoken');
 const sendEmail = require('./../utils/email');
 const { serialize } = require('cookie');
 
-const signToken = (id) => {
+exports.signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
-const createSendToken = (user, statusCode, res) => {
-  const token = signToken(user._id);
+exports.createSendToken = (user, statusCode, res) => {
+  const token = this.signToken(user._id);
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -41,22 +41,24 @@ const createSendToken = (user, statusCode, res) => {
 exports.protect = catchAsync(async (req, res, next) => {
   await dbConnect();
   //1) Getting the token and check if it exists
+  let token;
   if (
-    !req.headers.authorization ||
-    !req.headers.authorization.startsWith('Bearer')
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
   ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+  // if (req.cookies.jwt) {
+  //   token = req.cookies.jwt;
+  // }
+
+  if (!token) {
     return next(
       new AppError('You are not logged in! Please log in to get access.', 401)
     );
   }
 
-  if (!req.headers.authorization.split(' ')[1]) {
-    return next(
-      new AppError('You are not logged in! Please log in to get access.', 401)
-    );
-  }
-
-  const token = req.headers.authorization.split(' ')[1];
+  // const token = req.headers.authorization.split(' ')[1];
 
   //2) Token verification
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
@@ -150,5 +152,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   //4) Log user in, send JWT
-  createSendToken(user, 200, res);
+  this.createSendToken(user, 200, res);
 });

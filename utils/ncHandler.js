@@ -3,7 +3,8 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
-const hpp = requrie('hpp');
+const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 const AppError = require('./../utils/appError');
 
 const handleCastErrorDB = (err) => {
@@ -85,8 +86,9 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour!',
 });
 
+handler.use(cookieParser());
 // Limiting request from same IP
-handler.use('/api', limiter);
+// handler.use('/api', limiter);
 // Setting security HTTP headers
 handler.use(helmet());
 // Data sanitization against NoSQL query injection💉
@@ -95,5 +97,6 @@ handler.use(mongoSanitize());
 handler.use(xss());
 // Prevent parameter pollution
 handler.use(hpp());
+// Parse Cookies
 
 module.exports = handler;

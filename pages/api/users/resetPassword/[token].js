@@ -5,6 +5,7 @@ const User = require('../../../../models/userModel');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const AppError = require('./../../../../utils/appError');
+const authController = require('./../../../../controllers/authController');
 
 handler.patch(
   catchAsync(async (req, res, next) => {
@@ -31,11 +32,7 @@ handler.patch(
     await user.save();
 
     //3) Log the user in, send JWT
-    const tkn = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
-
-    res.status(200).json({ status: 'success', token: tkn });
+    authController.createSendToken(user, 200, res);
   })
 );
 

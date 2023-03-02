@@ -2,7 +2,7 @@ const handler = require('../../../utils/ncHandler');
 const dbConnect = require('../../../lib/mongoose');
 const catchAsync = require('../../../utils/catchAsync');
 const User = require('../../../models/userModel');
-const jwt = require('jsonwebtoken');
+const authController = require('./../../../controllers/authController');
 const AppError = require('./../../../utils/appError');
 
 handler.post(
@@ -24,14 +24,7 @@ handler.post(
     }
 
     //3) If everything is okay, send the token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
-
-    res.status(200).json({
-      status: 'success',
-      token,
-    });
+    authController.createSendToken(user, 200, res);
   })
 );
 
