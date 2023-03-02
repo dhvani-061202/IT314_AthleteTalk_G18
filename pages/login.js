@@ -38,10 +38,23 @@ export default function SignInSide() {
   const router = useRouter();
   React.useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      console.log('Already logged in!');
-      router.push('/dashboard');
-    }
+    if (!token) return;
+
+    fetch(`/api/users/details`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          router.push('/dashboard');
+        }
+      });
+
+    localStorage.removeItem('token');
   });
 
   const handleLogin = async (event) => {
@@ -70,10 +83,10 @@ export default function SignInSide() {
       console.log(responseData);
       return;
     }
-
+    console.log(responseData);
     localStorage.setItem('token', responseData.token);
     console.log('Logged in successfully!');
-    router.push('/dashboard');
+    router.push(`/dashboard`);
   };
 
   return (
@@ -153,7 +166,7 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
@@ -166,3 +179,5 @@ export default function SignInSide() {
     </ThemeProvider>
   );
 }
+
+SignInSide.getLayout = (page) => <>{page}</>;
