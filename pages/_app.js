@@ -31,7 +31,9 @@ function MyApp({ Component, pageProps }) {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .then((data) => {
         if (data.status !== 'success') {
           alert(data.message);
