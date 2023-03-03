@@ -41,6 +41,10 @@ theme = createTheme(theme, {
       fontWeight: 500,
     },
 
+    h1: {
+      fontSize: '2.5rem',
+    },
+
     h6: {
       fontSize: '1rem',
     },

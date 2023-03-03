@@ -8,11 +8,13 @@ import SideNav from '../components/SideNav';
 import AppHeader from '../components/AppHeader';
 import { ProSidebarProvider } from 'react-pro-sidebar';
 
+const invalidPathsForUser = ['/upload-video'];
+
 function MyApp({ Component, pageProps }) {
   if (Component.getLayout) {
     return Component.getLayout(<Component {...pageProps} />);
   }
-  const [user, setUser] = useState(null);
+  const [user, setUser] = React.useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -39,6 +41,14 @@ function MyApp({ Component, pageProps }) {
         }
 
         setUser(data.data.user);
+        if (
+          data &&
+          data.data.user.role === 'user' &&
+          invalidPathsForUser.includes(router.pathname)
+        ) {
+          alert('Invalid path for user! Redirecting to dashboard...');
+          router.push('/dashboard');
+        }
       });
   }, []);
 
