@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import '../styles/globals.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
