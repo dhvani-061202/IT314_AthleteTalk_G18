@@ -86,17 +86,17 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour!',
 });
 
-handler.use(cookieParser());
+// handler.use(cookieParser());
 // Limiting request from same IP
 // handler.use('/api', limiter);
 // Setting security HTTP headers
-handler.use(helmet());
+// handler.use(helmet());
 // Data sanitization against NoSQL query injection💉
-handler.use(mongoSanitize());
+// handler.use(mongoSanitize());
 // Data sanitization against XSS
-handler.use(xss());
+// handler.use(xss());
 // Prevent parameter pollution
-handler.use(hpp());
+// handler.use(hpp());
 // Parse Cookies
 
 module.exports = handler;
