@@ -14,6 +14,13 @@ const SideNav = (props) => {
   const router = useRouter();
   console.log(router.pathname);
 
+  let tag = 'User🙂';
+  if (props.user && props.user.role === 'admin') {
+    tag = 'Admin😎';
+  } else if (props.user && props.user.role === 'coach') {
+    tag = 'Coach 🧙🏼‍♂️';
+  }
+
   const { collapsed } = useProSidebar();
   return (
     <Sidebar
@@ -25,15 +32,13 @@ const SideNav = (props) => {
       backgroundColor={theme.palette.neutral.light}
     >
       <Box sx={styles.avatorContainer}>
-        <Avatar sx={styles.avatar} alt="Channel Name" src="user.svg" />
+        <Avatar sx={styles.avatar} alt="Channel Name" src="/user.svg" />
         {!collapsed && (
           <Typography variant="body2" sx={styles.yourChannel}>
             {props.user ? props.user.name.toUpperCase() : ' '}
           </Typography>
         )}
-        {!collapsed && (
-          <Typography variant="overline">React with Someone</Typography>
-        )}
+        {!collapsed && <Typography variant="overline">{tag}</Typography>}
       </Box>
       <Menu
         menuItemStyles={{
@@ -55,8 +60,8 @@ const SideNav = (props) => {
         </MenuItem>
         {props.user && props.user.role !== 'user' && (
           <MenuItem
-            active={router.pathname === '/upload-video'}
-            component={<Link href="/upload-video" />}
+            active={router.pathname === '/video/upload'}
+            component={<Link href="/video/upload" />}
             icon={<SourceOutlined />}
           >
             <Typography variant="body2">Upload Video</Typography>
@@ -68,6 +73,13 @@ const SideNav = (props) => {
           icon={<AnalyticsOutlined />}
         >
           <Typography variant="body2">Plans</Typography>
+        </MenuItem>
+        <MenuItem
+          active={router.pathname === '/video/browse'}
+          component={<Link href="/video/browse" />}
+          icon={<AnalyticsOutlined />}
+        >
+          <Typography variant="body2">Browse Videos</Typography>
         </MenuItem>
         <MenuItem
           active={router.pathname === '/community-chat'}

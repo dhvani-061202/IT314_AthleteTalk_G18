@@ -32,7 +32,7 @@ const AppHeader = () => {
         >
           <MenuTwoToneIcon />
         </IconButton>
-        <Box component="img" sx={styles.appLogo} src="logo.svg" />
+        <Box component="img" sx={styles.appLogo} src="/logo.svg" />
         <Box sx={{ flexGrow: 1 }} />
         <IconButton title="Notifications" color="secondary">
           <Badge badgeContent={14} color="error">

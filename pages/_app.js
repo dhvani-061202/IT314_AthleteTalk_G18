@@ -8,7 +8,7 @@ import SideNav from '../components/SideNav';
 import AppHeader from '../components/AppHeader';
 import { ProSidebarProvider } from 'react-pro-sidebar';
 
-const invalidPathsForUser = ['/upload-video'];
+const invalidPathsForUser = ['/video/upload'];
 
 function MyApp({ Component, pageProps }) {
   if (Component.getLayout) {
@@ -43,6 +43,8 @@ function MyApp({ Component, pageProps }) {
         setUser(data.data.user);
         if (
           data &&
+          data.data &&
+          data.data.user &&
           data.data.user.role === 'user' &&
           invalidPathsForUser.includes(router.pathname)
         ) {

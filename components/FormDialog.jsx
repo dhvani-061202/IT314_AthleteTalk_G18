@@ -8,7 +8,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { LoadingButton } from '@mui/lab';
 
-export default function FormDialog({ label, textPlaceHolder }) {
+export default function FormDialog({
+  label,
+  textPlaceHolder,
+  changeButtonClickState,
+}) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
@@ -41,6 +45,10 @@ export default function FormDialog({ label, textPlaceHolder }) {
         if (data.status !== 'success') {
           alert(data.message);
         } else {
+          changeButtonClickState((prev) => {
+            console.log('Add Button Clicked');
+            return !prev;
+          });
           alert('Category added successfully');
           setOpen(false);
         }
@@ -49,6 +57,7 @@ export default function FormDialog({ label, textPlaceHolder }) {
         console.error('Error: ', err);
         alert(err.message);
       });
+
     setLoading(false);
   };
 

@@ -1,9 +1,9 @@
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
-import FormDialog from '../../components/FormDialog';
-import MultipleSelectChip from '../../components/MultiSelect';
-import server from '../../server';
+import FormDialog from '../../../components/FormDialog';
+import MultipleSelectChip from '../../../components/MultiSelect';
+import server from '../../../server';
 
 function UploadVideo() {
   const [title, setTitle] = useState('');
@@ -17,6 +17,8 @@ function UploadVideo() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   let categoryIds = [];
   const extractedCategories = useRef([]);
+
+  const [fileName, setFileName] = useState('');
 
   const [submitLoader, setSubmitLoader] = useState(false);
 
@@ -59,6 +61,7 @@ function UploadVideo() {
   };
 
   useEffect(() => {
+    console.log('Fetching categories...🫴🫴');
     fetch(`/api/category`)
       .then((res) => res.json())
       .then((data) => {
@@ -69,13 +72,14 @@ function UploadVideo() {
           setCategories(data.data.categories);
         }
       });
-  }, []);
+  }, [newCategoryButtonClicked]);
 
   const handleFileChange = (e) => {
     const file = {
       preview: URL.createObjectURL(e.target.files[0]),
       data: e.target.files[0],
     };
+    setFileName(e.target.value);
     setFile(file);
   };
   return (
@@ -139,9 +143,7 @@ function UploadVideo() {
           />
           <Typography variant="h6">Didn&apos;t find your category? </Typography>
           <FormDialog
-            onClick={(e) => {
-              setNewCategoryButtonClicked(true);
-            }}
+            changeButtonClickState={setNewCategoryButtonClicked}
             label="Add Category"
             textPlaceHolder="Category Name"
           />
@@ -156,6 +158,7 @@ function UploadVideo() {
               accept="video/*"
             />
           </Button>
+          {fileName.split('\\').pop()}
         </div>
         <div>
           {submitLoader && (
