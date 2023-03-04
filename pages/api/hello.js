@@ -1,4 +1,3 @@
-import clientPromies from '../../lib/mongodb';
 import handler from './../../utils/ncHandler';
 
 handler.get(async (req, res) => {
