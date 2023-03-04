@@ -35,9 +35,12 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const [isLoading, setIsLoading] = React.useState();
   const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    setIsLoading(true);
     const data = new FormData(event.currentTarget);
     const body = {
       email: data.get('email'),
@@ -53,7 +56,7 @@ export default function SignUp() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-
+    setIsLoading(false);
     if (response.ok) {
       //set the token here...
 
@@ -141,14 +144,27 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
+            {!isLoading && (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign Up
+              </Button>
+            )}
+            {isLoading && (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                disabled
+              >
+                Creating User...
+              </Button>
+            )}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">
