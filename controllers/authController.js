@@ -7,6 +7,22 @@ const jwt = require('jsonwebtoken');
 const sendEmail = require('./../utils/email');
 const { serialize } = require('cookie');
 
+exports.handleError = (err, req, res) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+
+  return res.status(err.statusCode).json({
+    status: err.status,
+    error: err,
+    message: err.message,
+    stack: err.stack,
+  });
+};
+
+exports.handleNoMatch = (req, res) => {
+  res.status(404).json({ err: 'Page is not found' });
+};
+
 exports.signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,

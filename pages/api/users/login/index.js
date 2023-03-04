@@ -2,9 +2,14 @@ const nc = require('next-connect');
 const dbConnect = require('./../../../../lib/mongoose');
 const User = require('./../../../../models/userModel');
 const authController = require('./../../../../controllers/authController');
+const AppError = require('./../../../../utils/appError');
 
-const handler = nc();
-handler.post(async (req, res) => {
+const handler = nc({
+  onError: authController.handleError,
+  onNoMatch: authController.handleNoMatch,
+});
+
+handler.post(async (req, res, next) => {
   await dbConnect();
 
   const { email, password } = req.body;

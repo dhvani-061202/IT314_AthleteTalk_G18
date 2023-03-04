@@ -1,15 +1,21 @@
 import { Link } from '@mui/material';
+import AppHeader from './../components/AppHeader';
 
 export default function Home() {
-  return (
-    <>
-      <div>Beautiful Cover Page</div>
-      <Link href="/login">Login</Link>
-      <Link href="/signup">SignUp</Link>
-    </>
-  );
+  return <AppHeader />;
 }
 
-Home.getLayout = (page) => {
-  return <>{page}</>;
+/** @type {import('@mui/material').SxProps} */
+const styles = {
+  container: {
+    display: 'flex',
+    bgcolor: 'neutral.light',
+    height: 'calc( 100% - 64px )',
+  },
+  mainSection: {
+    p: 1,
+    width: '100%',
+    height: '100%',
+    overflow: 'auto',
+  },
 };
