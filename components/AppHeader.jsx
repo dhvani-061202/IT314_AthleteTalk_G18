@@ -6,16 +6,18 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useContext } from 'react';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import { Logout, Notifications, Settings } from '@mui/icons-material';
 import { useProSidebar } from 'react-pro-sidebar';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import AuthContext from '../store/auth-context';
 
 const AppHeader = () => {
   const router = useRouter();
-  let loggedIn = true;
+  const authCtx = useContext(AuthContext);
+  let loggedIn = authCtx.isLoggedIn;
 
   const { collapseSidebar, toggleSidebar, broken } = useProSidebar();
   const handleLogout = (e) => {

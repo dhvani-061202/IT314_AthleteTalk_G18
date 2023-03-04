@@ -7,17 +7,22 @@ import {
 import { Avatar, Box, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
 import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
+import AuthContext from '../store/auth-context';
 
 const SideNav = (props) => {
   const theme = useTheme();
   const router = useRouter();
+  const authCtx = useContext(AuthContext);
+
+  const user = Object.keys(authCtx.user).length > 0 ? authCtx.user : null;
   console.log(router.pathname);
 
   let tag = 'User🙂';
-  if (props.user && props.user.role === 'admin') {
+  if (user && user.role === 'admin') {
     tag = 'Admin😎';
-  } else if (props.user && props.user.role === 'coach') {
+  } else if (user && user.role === 'coach') {
     tag = 'Coach 🧙🏼‍♂️';
   }
 
@@ -35,7 +40,7 @@ const SideNav = (props) => {
         <Avatar sx={styles.avatar} alt="Channel Name" src="/user.svg" />
         {!collapsed && (
           <Typography variant="body2" sx={styles.yourChannel}>
-            {props.user ? props.user.name.toUpperCase() : ' '}
+            {user ? user.name.toUpperCase() : ' '}
           </Typography>
         )}
         {!collapsed && <Typography variant="overline">{tag}</Typography>}
@@ -58,7 +63,7 @@ const SideNav = (props) => {
         >
           <Typography variant="body2">Dashboard</Typography>
         </MenuItem>
-        {props.user && props.user.role !== 'user' && (
+        {user && user.role !== 'user' && (
           <MenuItem
             active={router.pathname === '/video/upload'}
             component={<Link href="/video/upload" />}
