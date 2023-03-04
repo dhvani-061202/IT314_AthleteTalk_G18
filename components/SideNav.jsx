@@ -17,7 +17,7 @@ const SideNav = (props) => {
   const authCtx = useContext(AuthContext);
 
   const user = Object.keys(authCtx.user).length > 0 ? authCtx.user : null;
-  console.log(router.pathname);
+  // console.log(router.pathname);
 
   let tag = 'User🙂';
   if (user && user.role === 'admin') {

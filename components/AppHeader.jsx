@@ -23,7 +23,7 @@ const AppHeader = () => {
   const handleLogout = (e) => {
     e.preventDefault();
 
-    localStorage.removeItem('token');
+    authCtx.logout();
     router.push('/login');
   };
 
