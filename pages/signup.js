@@ -46,7 +46,30 @@ export default function SignUp() {
       name: data.get('name'),
     };
 
-    console.log(body);
+    // console.log(body);
+
+    const response = await fetch(`/api/users/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    if (response.ok) {
+      //set the token here...
+
+      alert('User created successfully!');
+      router.push('/dashboard');
+      return;
+    }
+    let errorMessage = 'Some error occured! Try again later.';
+    try {
+      const responseData = await response.json();
+      errorMessage = responseData.message;
+    } catch (err) {
+      alert(err);
+      console.log(errorMessage);
+    }
+    alert(errorMessage);
   };
 
   return (

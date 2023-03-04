@@ -14,22 +14,15 @@ handler.post(
   catchAsync(async (req, res, next) => {
     await dbConnect();
 
-    const { email, password } = req.body;
+    const newUser = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      passwordConfirm: req.body.passwordConfirm,
+      role: req.body.role,
+    });
 
-    //1) Check if email and password exist
-    if (!email || !password) {
-      return next(new AppError('Please provide email and password!', 400));
-    }
-
-    //2) Check if the email is valid or not
-    const user = await User.findOne({ email }).select('+password');
-
-    if (!user || !(await user.correctPassword(password, user.password))) {
-      return next(new AppError('Incorrect email or password!', 401));
-    }
-
-    //3) If everything is okay, send the token
-    authController.createSendToken(user, 200, res);
+    authController.createSendToken(newUser, 201, res);
   })
 );
 
