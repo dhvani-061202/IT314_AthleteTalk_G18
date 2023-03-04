@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
+import AuthContext from '../store/auth-context';
 
 function Copyright(props) {
   return (
@@ -35,6 +36,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const authCtx = React.useContext(AuthContext);
   const [isLoading, setIsLoading] = React.useState();
   const router = useRouter();
   const handleSubmit = async (event) => {
@@ -57,16 +59,18 @@ export default function SignUp() {
       body: JSON.stringify(body),
     });
     setIsLoading(false);
+
+    const responseData = await response.json();
+
     if (response.ok) {
       //set the token here...
-
+      authCtx.login(responseData.token, responseData.data.user);
       alert('User created successfully!');
       router.push('/dashboard');
       return;
     }
     let errorMessage = 'Some error occured! Try again later.';
     try {
-      const responseData = await response.json();
       errorMessage = responseData.message;
     } catch (err) {
       alert(err);

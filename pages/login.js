@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
+import AuthContext from '../store/auth-context';
 
 function Copyright(props) {
   return (
@@ -37,13 +38,39 @@ const theme = createTheme();
 export default function SignInSide() {
   const router = useRouter();
 
+  const authCtx = React.useContext(AuthContext);
+
   const handleLogin = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const body = {
       email: data.get('email'),
       password: data.get('password'),
+    };
+    console.log(body);
+
+    const response = await fetch(`/api/users/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
     });
+    const responseData = await response.json();
+
+    if (response.ok) {
+      //set the tokens here
+      authCtx.login(responseData.token, responseData.data.user);
+      console.log(responseData);
+      router.push('/dashboard');
+      return;
+    }
+    let errorMessage = 'Some error occured! Try again later.';
+    try {
+      errorMessage = responseData.message;
+    } catch (err) {
+      alert(err);
+      console.log(errorMessage);
+    }
+    alert(errorMessage);
   };
 
   return (
