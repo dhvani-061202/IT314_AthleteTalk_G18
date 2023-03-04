@@ -1,6 +1,6 @@
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import FormDialog from '../../../components/FormDialog';
 import MultipleSelectChip from '../../../components/MultiSelect';
 import server from '../../../server';
@@ -45,34 +45,8 @@ function UploadVideo() {
     formData.append('description', description);
     formData.append('categories', categoryIds);
 
-    const response = await fetch(`/api/videos/upload`, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-
-    const responseWithBody = await response.json();
-    console.log('got response', responseWithBody);
-    if (response) setUrl(responseWithBody.publicUrl);
-
     setSubmitLoader(false);
   };
-
-  useEffect(() => {
-    console.log('Fetching categories...🫴🫴');
-    fetch(`/api/category`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && data.data && data.data.categories) {
-          extractedCategories.current = data.data.categories.map(
-            (category) => category.name
-          );
-          setCategories(data.data.categories);
-        }
-      });
-  }, [newCategoryButtonClicked]);
 
   const handleFileChange = (e) => {
     const file = {
@@ -83,26 +57,6 @@ function UploadVideo() {
     setFile(file);
   };
   return (
-    // <form onSubmit={handleSubmit}>
-    //   <label htmlFor="Title">Title</label>
-    //   <input
-    //     type="text"
-    //     name="Title"
-    //     onChange={(e) => setTitle(e.target.value)}
-    //   ></input>
-    //   <br></br>
-    //   <label htmlFor="Description">Description</label>
-    //   <textarea
-    //     name="Description"
-    //     rows={5}
-    //     cols={40}
-    //     onChange={(e) => setDescription(e.target.value)}
-    //   ></textarea>
-    //   <br></br>
-    //   <input type="file" name="file" onChange={handleFileChange}></input>
-    //   <br></br>
-    //   <button type="submit">Submit</button>
-    // </form>
     <>
       <Typography sx={{ p: 2, fontSize: '2rem' }}>Upload Video</Typography>
       <Box

@@ -47,25 +47,6 @@ export default function SignUp() {
     };
 
     console.log(body);
-
-    const response = await fetch(`/api/users/signup`, {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const responseData = await response.json();
-    if (responseData.status !== 'success') {
-      alert(responseData.message);
-      console.log(responseData);
-      return;
-    }
-    console.log(responseData);
-    localStorage.setItem('token', responseData.token);
-
-    router.push('/dashboard');
   };
 
   return (

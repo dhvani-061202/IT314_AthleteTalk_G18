@@ -36,26 +36,6 @@ const theme = createTheme();
 
 export default function SignInSide() {
   const router = useRouter();
-  React.useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
-    fetch(`/api/users/details`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === 'success') {
-          router.push('/dashboard');
-        }
-      });
-
-    localStorage.removeItem('token');
-  });
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -64,29 +44,6 @@ export default function SignInSide() {
       email: data.get('email'),
       password: data.get('password'),
     });
-
-    const response = await fetch(`/api/users/login`, {
-      method: 'POST',
-      body: JSON.stringify({
-        email: data.get('email'),
-        password: data.get('password'),
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const responseData = await response.json();
-    if (responseData.status !== 'success') {
-      //some error occured
-      alert(responseData.message);
-      console.log(responseData);
-      return;
-    }
-    console.log(responseData);
-    localStorage.setItem('token', responseData.token);
-    console.log('Logged in successfully!');
-    router.push(`/dashboard`);
   };
 
   return (

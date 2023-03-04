@@ -32,32 +32,6 @@ export default function FormDialog({
       return;
     }
 
-    fetch(`/api/category`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify({ name: value }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status !== 'success') {
-          alert(data.message);
-        } else {
-          changeButtonClickState((prev) => {
-            console.log('Add Button Clicked');
-            return !prev;
-          });
-          alert('Category added successfully');
-          setOpen(false);
-        }
-      })
-      .catch((err) => {
-        console.error('Error: ', err);
-        alert(err.message);
-      });
-
     setLoading(false);
   };
 
