@@ -18,7 +18,7 @@ const handler = nc({
     });
   },
   onNoMatch: (req, res) => {
-    res.status(404).json({ err: 'Page is not found' });
+    res.status(404).json({ err: 'Page not found' });
   },
 });
 
