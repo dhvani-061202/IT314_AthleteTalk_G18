@@ -1,11 +1,15 @@
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import FormDialog from '../../../components/FormDialog';
 import MultipleSelectChip from '../../../components/MultiSelect';
 import server from '../../../server';
+import AuthContext from '../../../store/auth-context';
 
 function UploadVideo() {
+  const authCtx = useContext(AuthContext);
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
@@ -22,8 +26,54 @@ function UploadVideo() {
 
   const [submitLoader, setSubmitLoader] = useState(false);
 
+  useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    console.log('Sending fetch req');
+    if (
+      !localStorage.getItem('token') &&
+      (!authCtx.isLoggedIn || authCtx.user.role === 'user')
+    ) {
+      router.push('/dashboard');
+      return () => {
+        console.log('aborting fetch');
+        abortController.abort();
+      };
+    }
+
+    fetch(`/api/category`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      signal: signal,
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log(response);
+          throw new Error('Something went wrong!🥲');
+        }
+      })
+      .then((data) => {
+        setCategories(data.data.categories);
+        extractedCategories.current = [];
+        data.data.categories.map((category) => {
+          extractedCategories.current.push(category.name);
+        });
+        console.log('Categories Loaded');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [newCategoryButtonClicked]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitLoader(true);
+
     if (!title) return alert('Please provide a title for the video!');
     if (!description)
       return alert('Please provide a description for the video!');
@@ -31,7 +81,6 @@ function UploadVideo() {
       return alert('Please select at least one category for the video!');
     if (!file) return alert('Please select a file to upload!');
 
-    setSubmitLoader(true);
     categoryIds = [];
     categories.find((category) => {
       if (selectedCategories.includes(category.name)) {
@@ -44,8 +93,30 @@ function UploadVideo() {
     formData.append('title', title);
     formData.append('description', description);
     formData.append('categories', categoryIds);
-
-    setSubmitLoader(false);
+    console.log('Sending the video upload req');
+    fetch(`/api/videos/upload`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: formData,
+    })
+      .then((response) => {
+        setSubmitLoader(false);
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log(response);
+          throw new Error('Something went wrong!🥲');
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        alert('Video Uploaded Successfully!');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleFileChange = (e) => {
@@ -116,8 +187,8 @@ function UploadVideo() {
         </div>
         <div>
           {submitLoader && (
-            <LoadingButton loading variant="contained" onClick={handleSubmit}>
-              Submit
+            <LoadingButton loading variant="outlined" disabled>
+              Uploading
             </LoadingButton>
           )}
           {!submitLoader && (

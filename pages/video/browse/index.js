@@ -13,7 +13,7 @@ const BrowseVideos = (props) => {
   const [videos, setVideos] = React.useState([]);
 
   useEffect(() => {
-    if (!authCtx.isLoggedIn) {
+    if (!localStorage.getItem('token') && !authCtx.isLoggedIn) {
       router.push('/login');
       return;
     }

@@ -7,12 +7,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { LoadingButton } from '@mui/lab';
+import AuthContext from '../store/auth-context';
 
 export default function FormDialog({
   label,
   textPlaceHolder,
   changeButtonClickState,
 }) {
+  const authCtx = React.useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
@@ -31,6 +33,35 @@ export default function FormDialog({
       alert(`Please enter a value for ${textPlaceHolder}`);
       return;
     }
+
+    fetch(`/api/category`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${authCtx.token}`,
+      },
+      body: JSON.stringify({
+        name: value,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setValue('');
+          return response.json();
+        } else {
+          alert('Error adding category');
+          throw new Error('Error adding category');
+        }
+      })
+      .then((data) => {
+        setOpen(false);
+        alert('Category added successfully');
+        changeButtonClickState((prev) => !prev);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     setLoading(false);
   };
