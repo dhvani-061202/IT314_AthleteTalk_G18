@@ -40,10 +40,7 @@ const Dashboard = () => {
   );
 };
 
-Dashboard.getLayout = (page) => (
-  <>
-    <MainLayout>{page}</MainLayout>
-  </>
-);
+// Dashboard.getLayout = (page) => <MainLayout>{page}</MainLayout>;
+// Dashboard.getLayout = (page) => <>{page}</>;
 
 export default Dashboard;

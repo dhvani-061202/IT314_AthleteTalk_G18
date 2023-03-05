@@ -36,8 +36,11 @@ exports.createSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    secure: process.env.NODE_ENV !== 'development',
+    sameSite: 'strict',
+    path: '/',
   };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  // if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
   const serialized = serialize('jwt', token, cookieOptions);
   res.setHeader('Set-Cookie', serialized);
@@ -64,9 +67,9 @@ exports.protect = catchAsync(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(' ')[1];
   }
-  // if (req.cookies.jwt) {
-  //   token = req.cookies.jwt;
-  // }
+  if (req.cookie) {
+    token = req.cookie;
+  }
 
   if (!token) {
     return next(

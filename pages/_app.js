@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import '@fontsource/roboto/300.css';
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import {
   CssBaseline,
@@ -8,7 +8,8 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import theme from './../config/theme';
-import { AuthContextProvider } from './../store/auth-context';
+import AuthContext, { AuthContextProvider } from './../store/auth-context';
+import MainLayout from '../layouts/mainLayout';
 
 function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
@@ -19,7 +20,7 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider theme={theme}>
         <ProSidebarProvider>
           <CssBaseline />
-          {component}
+          <MainLayout>{component}</MainLayout>
         </ProSidebarProvider>
       </ThemeProvider>
     </AuthContextProvider>
