@@ -71,6 +71,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.cookie;
   }
 
+  console.log(token);
+
   if (!token) {
     return next(
       new AppError('You are not logged in! Please log in to get access.', 401)
@@ -92,6 +94,8 @@ exports.protect = catchAsync(async (req, res, next) => {
       )
     );
   }
+
+  console.log(freshUser);
 
   //4) Check if user changed password after the token was issued
   if (freshUser.changedPasswordAfter(decoded.iat)) {

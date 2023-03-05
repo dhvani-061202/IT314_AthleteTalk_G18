@@ -5,10 +5,42 @@ import AuthContext, { AuthContextProvider } from '../../../store/auth-context';
 const { server } = require('./../../../utils/server');
 import VideoCard from '../../../components/VideoCard';
 import { Grid } from '@mui/material';
+import { useRouter } from 'next/router';
 
 const BrowseVideos = (props) => {
+  const router = useRouter();
   const authCtx = useContext(AuthContext);
-  let videos = props.data.data.videos;
+  const [videos, setVideos] = React.useState([]);
+
+  useEffect(() => {
+    if (!authCtx.isLoggedIn) {
+      router.push('/login');
+      return;
+    }
+
+    fetch(`/api/videos`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authCtx.token}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log(response);
+          return new Error('Something went wrong!🥲');
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        setVideos(data.data.videos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [authCtx.isLoggedIn]);
 
   return (
     <Grid container spacing={2} style={{ width: '80%', ml: '10%' }}>
@@ -24,19 +56,29 @@ const BrowseVideos = (props) => {
 };
 
 // BrowseVideos.getLayout = (page) => <MainLayout>{page}</MainLayout>;
-
+/*
 export async function getServerSideProps(context) {
   const { req, res } = context;
 
-  const response = await fetch(`${server}/api/videos`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${req.cookies.jwt}`,
-    },
-  });
+  try {
+    const response = await fetch(`http://localhost:3000/api/videos`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.cookies.jwt}`,
+      },
+    });
 
-  const data = await response.json();
+    if (response.ok) {
+      const data = await response.json();
+      return { props: { data } };
+    }
+
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+    return { props: {} };
+  }
 
   return {
     props: {
@@ -45,4 +87,5 @@ export async function getServerSideProps(context) {
   };
 }
 
+*/
 export default BrowseVideos;

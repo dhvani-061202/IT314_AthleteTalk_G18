@@ -14,6 +14,7 @@ handler.get(
     const videos = await Video.find({})
       .populate('categories')
       .populate('uploader');
+    console.log(videos);
 
     res.status(200).json({
       status: 'success',
