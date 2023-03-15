@@ -8,12 +8,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { LoadingButton } from '@mui/lab';
 import AuthContext from '../store/auth-context';
+import { useRouter } from 'next/router';
 
 export default function FormDialog({
   label,
   textPlaceHolder,
   changeButtonClickState,
 }) {
+  const router = useRouter();
   const authCtx = React.useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
@@ -56,6 +58,7 @@ export default function FormDialog({
       .then((data) => {
         setOpen(false);
         alert('Category added successfully');
+        router.replace(router.asPath);
         changeButtonClickState((prev) => !prev);
         console.log(data);
       })

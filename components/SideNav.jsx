@@ -73,11 +73,11 @@ const SideNav = (props) => {
           </MenuItem>
         )}
         <MenuItem
-          active={router.pathname === '/plans'}
-          component={<Link href="/plans" />}
+          active={router.pathname === '/plans/create'}
+          component={<Link href="/plans/create" />}
           icon={<AnalyticsOutlined />}
         >
-          <Typography variant="body2">Plans</Typography>
+          <Typography variant="body2">Create Plan</Typography>
         </MenuItem>
         <MenuItem
           active={router.pathname === '/video/browse'}

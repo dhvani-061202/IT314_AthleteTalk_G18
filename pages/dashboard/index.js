@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Typography } from '@mui/material';
 import '@fontsource/roboto/300.css';
@@ -9,26 +9,19 @@ import MainLayout from '../../layouts/mainLayout';
 
 const Dashboard = () => {
   const authCtx = useContext(AuthContext);
+  const router = useRouter();
 
   const isLoggedIn = authCtx.isLoggedIn;
 
-  if (!isLoggedIn) {
-    return (
-      <Typography
-        sx={{
-          width: '30%',
-          ml: '35%',
-          fontSize: '2.5rem',
-          textAlign: 'center',
-          fontWeight: 'bold',
-          mt: '10%',
-        }}
-        varient="h1"
-      >
-        You ought to be logged in to see this page.
-      </Typography>
-    );
-  }
+  useEffect(() => {
+    if (!isLoggedIn && !localStorage.getItem('token')) {
+      router.push('/login');
+    }
+
+    return () => {
+      // cleanup
+    };
+  }, []);
 
   return (
     <>

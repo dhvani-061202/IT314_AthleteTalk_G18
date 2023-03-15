@@ -7,11 +7,10 @@ import VideoCard from '../../../components/VideoCard';
 import { Grid } from '@mui/material';
 import { useRouter } from 'next/router';
 
-const BrowseVideos = (props) => {
-  const router = useRouter();
-  const authCtx = useContext(AuthContext);
-  const [videos, setVideos] = React.useState([]);
-
+const BrowseVideos = ({ videos }) => {
+  // const authCtx = useContext(AuthContext);
+  // const [videos, setVideos] = React.useState([]);
+  /*
   useEffect(() => {
     if (!localStorage.getItem('token') && !authCtx.isLoggedIn) {
       router.push('/login');
@@ -42,6 +41,8 @@ const BrowseVideos = (props) => {
       });
   }, [authCtx.isLoggedIn]);
 
+  */
+
   return (
     <Grid container spacing={2} style={{ width: '80%', ml: '10%' }}>
       {videos &&
@@ -56,36 +57,31 @@ const BrowseVideos = (props) => {
 };
 
 // BrowseVideos.getLayout = (page) => <MainLayout>{page}</MainLayout>;
-/*
+
 export async function getServerSideProps(context) {
   const { req, res } = context;
 
+  //Checking if there is a cookie of jwt token
+  if (!req.cookies.jwt)
+    return { redirect: { destination: '/login', permanent: false } };
+
   try {
-    const response = await fetch(`http://localhost:3000/api/videos`, {
+    const response = await fetch(`${server}/api/videos`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${req.cookies.jwt}`,
       },
     });
-
     if (response.ok) {
       const data = await response.json();
-      return { props: { data } };
+      return { props: { videos: data.data.videos } };
     }
-
-    console.log(response);
   } catch (err) {
     console.log(err);
-    return { props: {} };
+    return { redirect: { destination: '/login', permanent: false } };
   }
-
-  return {
-    props: {
-      data,
-    },
-  };
+  return { redirect: { destination: '/login', permanent: false } };
 }
 
-*/
 export default BrowseVideos;
