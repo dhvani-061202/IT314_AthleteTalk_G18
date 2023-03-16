@@ -206,12 +206,16 @@ EnhancedTableToolbar.propTypes = {
 export default function EnhancedTable(props) {
   rows = props.rows;
   const currentDay = props.day;
+  const setSelectedVideos = props.setVideosSelected;
 
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('uploader');
-  let selected = props.selectedVideos[currentDay];
+  const [selected, setSelected] = React.useState([]);
 
-  const setSelected = props.setVideosSelected;
+  React.useEffect(() => {
+    setSelected(props.selectedVideos[currentDay]);
+  }, [props.selectedVideos[currentDay]]);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -221,20 +225,19 @@ export default function EnhancedTable(props) {
     setOrderBy(property);
   };
 
-  React.useEffect(() => {
-    console.log('rerendering');
-  }, [props.selectedVideos]);
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n._id);
-      setSelected((prev) => {
+      setSelected(newSelected);
+      setSelectedVideos((prev) => {
         const newVideos = prev;
         newVideos[currentDay] = newSelected;
         return newVideos;
       });
+      return;
     }
-    setSelected((prev) => {
+    setSelected([]);
+    setSelectedVideos((prev) => {
       const newVideos = prev;
       newVideos[currentDay] = [];
       return newVideos;
@@ -257,8 +260,13 @@ export default function EnhancedTable(props) {
         selected.slice(selectedIndex + 1)
       );
     }
-
+    console.log(newSelected);
     setSelected(newSelected);
+    setSelectedVideos((prev) => {
+      const newVideos = prev;
+      newVideos[currentDay] = newSelected;
+      return newVideos;
+    });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -270,7 +278,7 @@ export default function EnhancedTable(props) {
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =

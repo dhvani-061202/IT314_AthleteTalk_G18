@@ -16,9 +16,40 @@ const CreatePlans = ({ categories, videos }) => {
   const [planName, setPlanName] = useState('');
   const [planDes, setPlanDes] = useState('');
   const [videosSelected, setVideosSelected] = useState([[]]);
-
-  const handleCreatePlans = (event) => {
+  console.log(videosSelected);
+  const handleCreatePlans = async (event) => {
     event.preventDefault();
+
+    if (
+      !planName ||
+      !planDes ||
+      selectedCategories.length == 0 ||
+      noOfDays == 0
+    ) {
+      alert('Please fill all the fields');
+      return;
+    }
+
+    const plan = {
+      name: planName,
+      description: planDes,
+      categories: selectedCategories,
+      noOfDays: noOfDays,
+      videos: videosSelected,
+    };
+
+    const postResponse = await fetch(`/api/plans`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authentication: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(plan),
+    });
+
+    if (postResponse.ok) {
+      alert('Pland created successfully');
+    }
   };
 
   useEffect(() => {
@@ -124,7 +155,31 @@ const CreatePlans = ({ categories, videos }) => {
       />
     </>
   );
-  const page2 = <>Summary Page</>;
+  const page2 = (
+    <>
+      <Typography variant="h3">Summary</Typography>
+      <Typography variant="h5">Plan Name: {planName}</Typography>
+      <Typography variant="h5">Description: {planDes}</Typography>
+      <Typography variant="h5">No of Days: {noOfDays}</Typography>
+      <Typography variant="h5">
+        Categories:{' '}
+        {selectedCategories.map((categories) => {
+          return categories + ', ';
+        })}
+      </Typography>
+      {videosSelected.map((vid, index) => {
+        return (
+          <Typography variant="h5" key={index}>
+            Day {index + 1}:{' '}
+            {vid.map((id) => {
+              const video = videos.find((video) => video.id == id);
+              return video.title + ', ';
+            })}
+          </Typography>
+        );
+      })}
+    </>
+  );
 
   const pages = [page0, page1, page2];
 
@@ -143,10 +198,16 @@ const CreatePlans = ({ categories, videos }) => {
         <Button variant="standard" onClick={handleBack}>
           Back
         </Button>
-        <Button variant="contained" onClick={handleNext}>
-          {currentPage != pages.length - 1 && 'Next'}
-          {currentPage == pages.length - 1 && 'Submit'}
-        </Button>
+        {currentPage != pages.length - 1 && (
+          <Button variant="contained" onClick={handleNext}>
+            Next
+          </Button>
+        )}
+        {currentPage == pages.length - 1 && (
+          <Button variant="contained" onClick={handleCreatePlans}>
+            Submit
+          </Button>
+        )}
       </Box>
     </>
   );
