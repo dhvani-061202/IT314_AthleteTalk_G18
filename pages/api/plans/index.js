@@ -1,0 +1,55 @@
+import Plan from '../../../models/planModel';
+
+const nc = require('next-connect');
+const catchAsync = require('../../../utils/catchAsync');
+const authController = require('./../../../controllers/authController');
+const dbConnect = require('./../../../lib/mongoose');
+
+const handler = nc({
+  onError: authController.handleError,
+  onNoMatch: authController.handleNoMatch,
+});
+
+handler.get(
+  authController.protect,
+  catchAsync(async (req, res, next) => {
+    const plans = await Plan.find({}).populate('creator');
+    console.log(plans);
+
+    res.status(200).json({
+      status: 'success',
+      results: plans.length,
+      data: {
+        plans,
+      },
+    });
+  })
+);
+
+handler.post(
+  authController.protect,
+  authController.restrictTo('admin', 'coach'),
+  catchAsync(async (req, res, next) => {
+    const plan = Object.assign(req.body, {
+      creator: req.user._id.toString(),
+    });
+
+    // console.log(plan);
+
+    let newPlan = null;
+    try {
+      newPlan = await Plan.create(plan);
+    } catch (err) {
+      console.log(err);
+    }
+
+    console.log(newPlan);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Plan Added Successfully',
+    });
+  })
+);
+
+export default handler;

@@ -10,6 +10,7 @@ const { serialize } = require('cookie');
 exports.handleError = (err, req, res) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
+  console.log(err);
 
   return res.status(err.statusCode).json({
     status: err.status,
@@ -71,7 +72,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.cookie;
   }
 
-  console.log(token);
+  // console.log(token);
 
   if (!token) {
     return next(
@@ -95,7 +96,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
 
-  console.log(freshUser);
+  // console.log(freshUser);
 
   //4) Check if user changed password after the token was issued
   if (freshUser.changedPasswordAfter(decoded.iat)) {

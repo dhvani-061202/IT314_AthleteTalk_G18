@@ -72,12 +72,21 @@ const SideNav = (props) => {
             <Typography variant="body2">Upload Video</Typography>
           </MenuItem>
         )}
+        {user && user.role !== 'user' && (
+          <MenuItem
+            active={router.pathname === '/plans/create'}
+            component={<Link href="/plans/create" />}
+            icon={<AnalyticsOutlined />}
+          >
+            <Typography variant="body2">Create Plan</Typography>
+          </MenuItem>
+        )}
         <MenuItem
-          active={router.pathname === '/plans/create'}
-          component={<Link href="/plans/create" />}
+          active={router.pathname === '/plans/browse'}
+          component={<Link href="/plans/browse" />}
           icon={<AnalyticsOutlined />}
         >
-          <Typography variant="body2">Create Plan</Typography>
+          <Typography variant="body2">Browse Plans</Typography>
         </MenuItem>
         <MenuItem
           active={router.pathname === '/video/browse'}

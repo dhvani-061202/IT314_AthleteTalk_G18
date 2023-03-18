@@ -16,7 +16,7 @@ const CreatePlans = ({ categories, videos }) => {
   const [planName, setPlanName] = useState('');
   const [planDes, setPlanDes] = useState('');
   const [videosSelected, setVideosSelected] = useState([[]]);
-  console.log(videosSelected);
+  // console.log(videosSelected);
   const handleCreatePlans = async (event) => {
     event.preventDefault();
 
@@ -30,10 +30,18 @@ const CreatePlans = ({ categories, videos }) => {
       return;
     }
 
+    const filteredCateogries = categories.filter((category) =>
+      selectedCategories.includes(category.name)
+    );
+    const selectedCategoriesID = filteredCateogries.map(
+      (category) => category._id
+    );
+    // console.log(filteredCateogries);
+
     const plan = {
       name: planName,
       description: planDes,
-      categories: selectedCategories,
+      categories: selectedCategoriesID,
       noOfDays: noOfDays,
       videos: videosSelected,
     };
@@ -42,13 +50,16 @@ const CreatePlans = ({ categories, videos }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        authentication: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify(plan),
     });
 
     if (postResponse.ok) {
       alert('Pland created successfully');
+    } else {
+      alert('Error creating plan');
+      console.log(postResponse);
     }
   };
 
