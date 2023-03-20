@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Plan from '../../../models/planModel';
 
 const nc = require('next-connect');
@@ -14,7 +15,6 @@ handler.get(
   authController.protect,
   catchAsync(async (req, res, next) => {
     const plans = await Plan.find({}).populate('creator');
-    console.log(plans);
 
     res.status(200).json({
       status: 'success',
@@ -34,16 +34,7 @@ handler.post(
       creator: req.user._id.toString(),
     });
 
-    // console.log(plan);
-
-    let newPlan = null;
-    try {
-      newPlan = await Plan.create(plan);
-    } catch (err) {
-      console.log(err);
-    }
-
-    console.log(newPlan);
+    await Plan.create(plan);
 
     res.status(200).json({
       status: 'success',

@@ -21,7 +21,7 @@ handler.get(
   catchAsync(async (req, res, next) => {
     const { id } = req.query;
 
-    console.log(id);
+    // console.log(id);
     let auth = await authenticateGoogle();
 
     const driveService = google.drive({ version: 'v2', auth });

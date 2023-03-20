@@ -15,16 +15,30 @@ handler.get(
   catchAsync(async (req, res, next) => {
     const { id } = req.query;
 
-    let plan = await Plan.findById(id)
+    const plan = await Plan.findById(id)
       .populate('creator')
       .populate('categories');
 
-    console.log(typeof plan);
+    let allVideoIds = plan.videos[0];
+    for (let i = 1; i < plan.videos.length; i++) {
+      allVideoIds = allVideoIds.concat(plan.videos[i]);
+    }
+
+    const uniqueVideoIds = [...new Set(allVideoIds)];
+    const uniqueVideos = await Video.find({ _id: { $in: uniqueVideoIds } });
+
+    let videoData = Object.assign(plan.videos);
+    for (let i = 0; i < videoData.length; i++) {
+      videoData[i] = videoData[i].map((videoId) => {
+        return uniqueVideos.find((video) => video.id === videoId);
+      });
+    }
 
     res.status(200).json({
       status: 'success',
       data: {
         plan,
+        planVideos: videoData,
       },
     });
   })

@@ -260,7 +260,7 @@ export default function EnhancedTable(props) {
         selected.slice(selectedIndex + 1)
       );
     }
-    console.log(newSelected);
+    // console.log(newSelected);
     setSelected(newSelected);
     setSelectedVideos((prev) => {
       const newVideos = prev;

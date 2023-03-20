@@ -79,7 +79,7 @@ handler.post(
   authController.protect,
   authController.restrictTo('admin', 'coach'),
   async (req, res, next) => {
-    console.log(req.body.categories);
+    // console.log(req.body.categories);
     const categories = req.body.categories.split(',');
     //Get auth from Google Drive
     let auth = await authenticateGoogle();
@@ -87,7 +87,7 @@ handler.post(
     // Upload video to Google Drive and obtain
     //  response of the file uploaded.
     let file_response = await uploadToGoogleDrive(req.file, auth);
-    console.log(file_response);
+    // console.log(file_response);
 
     // Create a new Video based on the req.body parameters
     const newVideo = await Video.create({

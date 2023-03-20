@@ -252,7 +252,7 @@ export const getServerSideProps = async (context) => {
       if (!data.data.categories) throw new Error('No categories found');
       categories = data.data.categories;
     } else {
-      console.log(categoriesResponse);
+      // console.log(categoriesResponse);
       throw new Error('Something went wrong!🥲');
     }
 
@@ -270,7 +270,7 @@ export const getServerSideProps = async (context) => {
       if (!data.data.videos) throw new Error('No videos found');
       videos = data.data.videos;
     } else {
-      console.log(videosResponse);
+      // console.log(videosResponse);
       throw new Error('Something went wrong!🥲');
     }
 

@@ -1,7 +1,4 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
 import server from '../server';
 import Video from './videoModel';
 

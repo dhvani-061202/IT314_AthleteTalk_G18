@@ -14,10 +14,10 @@ import { useRouter } from 'next/router';
 import React from 'react';
 const { server } = require('./../../../utils/server');
 
-const PlanDetails = ({ plan }) => {
+const PlanDetails = ({ plan, planVideos }) => {
   const router = useRouter();
   const theme = useTheme();
-  console.log(plan);
+  console.log(planVideos);
 
   const handleBack = (e) => {
     e.preventDefault();
@@ -29,12 +29,12 @@ const PlanDetails = ({ plan }) => {
         Back
       </Button>
       <Box>
-        <Typography variant="h3">{plan.name}</Typography>
-        <Typography variant="h5">{plan.description}</Typography>
-        <Typography variant="h5">
+        <Typography variant="h4">{plan.name}</Typography>
+        <Typography variant="h6">{plan.description}</Typography>
+        <Typography variant="h6">
           <b>Created By:</b> {plan.creator.name}
         </Typography>
-        <Typography variant="h5" sx={{ mb: 1, display: 'inline' }}>
+        <Typography variant="h6" sx={{ mb: 1, display: 'inline' }}>
           Categories:{' '}
         </Typography>
         {plan.categories.map((category, idx) => {
@@ -57,16 +57,34 @@ const PlanDetails = ({ plan }) => {
           );
         })}
 
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>No. </TableCell>
-                <TableCell>Video Name</TableCell>
-              </TableRow>
-            </TableHead>
-          </Table>
-        </TableContainer>
+        {planVideos.map((videoDay, idx) => {
+          return (
+            <Box key={idx}>
+              <Typography variant="h5" sx={{ mt: 2 }}>
+                {' '}
+                Day {idx + 1}
+              </Typography>
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell component={'th'}>No. </TableCell>
+                      <TableCell component={'th'}>Video Name</TableCell>
+                    </TableRow>
+                    {videoDay.map((video, idx) => {
+                      return (
+                        <TableRow key={idx}>
+                          <TableCell>{idx + 1}</TableCell>
+                          <TableCell>{video.title}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableHead>
+                </Table>
+              </TableContainer>
+            </Box>
+          );
+        })}
       </Box>
     </>
   );
@@ -99,6 +117,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         plan: planData.data.plan,
+        planVideos: planData.data.planVideos,
       },
     };
   } catch (err) {

@@ -60,7 +60,7 @@ export default function FormDialog({
         alert('Category added successfully');
         router.replace(router.asPath);
         changeButtonClickState((prev) => !prev);
-        console.log(data);
+        // console.log(data);
       })
       .catch((error) => {
         console.log(error);

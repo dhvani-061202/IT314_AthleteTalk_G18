@@ -8,3 +8,7 @@ body {
 #__next {
   height: 100%;
 }
+
+#nprogress .bar {
+  background: rgb(107, 236, 113) !important;
+}

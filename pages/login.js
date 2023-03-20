@@ -47,7 +47,7 @@ export default function SignInSide() {
       email: data.get('email'),
       password: data.get('password'),
     };
-    console.log(body);
+    // console.log(body);
 
     const response = await fetch(`/api/users/login`, {
       method: 'POST',
@@ -59,7 +59,7 @@ export default function SignInSide() {
     if (response.ok) {
       //set the tokens here
       authCtx.login(responseData.token, responseData.data.user);
-      console.log(responseData);
+      // console.log(responseData);
       router.push('/dashboard');
       return;
     }
