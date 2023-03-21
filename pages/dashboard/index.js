@@ -1,39 +1,60 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import '@fontsource/roboto/300.css';
-import AuthContext from './../../store/auth-context';
-import AppHeader from './../../components/AppHeader';
-import SideNav from './../../components/SideNav';
-import MainLayout from '../../layouts/mainLayout';
 
-const Dashboard = () => {
-  const authCtx = useContext(AuthContext);
-  const router = useRouter();
-
-  const isLoggedIn = authCtx.isLoggedIn;
-
-  useEffect(() => {
-    if (!isLoggedIn && !localStorage.getItem('token')) {
-      router.push('/login');
-    }
-
-    return () => {
-      // cleanup
-    };
-  }, []);
-
+const Dashboard = ({ user }) => {
   return (
     <>
-      <Typography varient="h6">
-        DashBoard, You are{' '}
-        {isLoggedIn ? `${authCtx.user.name}🙂` : 'not logged in🤔'}
-      </Typography>
+      <Typography varient="h6">DashBoard, You are {user.name}</Typography>
     </>
   );
 };
 
-// Dashboard.getLayout = (page) => <MainLayout>{page}</MainLayout>;
-// Dashboard.getLayout = (page) => <>{page}</>;
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+
+  if (!req.cookies.jwt) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/verify`,
+      {
+        headers: {
+          Authorization: `Bearer ${req.cookies.jwt}`,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        props: {
+          user: data.user,
+        },
+      };
+    } else {
+      throw new Error('Not authenticated!');
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
 
 export default Dashboard;

@@ -1,74 +1,26 @@
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import FormDialog from '../../../components/FormDialog';
 import MultipleSelectChip from '../../../components/MultiSelect';
 import server from '../../../server';
-import AuthContext from '../../../store/auth-context';
 
-function UploadVideo() {
-  const authCtx = useContext(AuthContext);
-  const router = useRouter();
+function UploadVideo({ categories }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [url, setUrl] = useState('');
   const [file, setFile] = useState(null);
   const [newCategoryButtonClicked, setNewCategoryButtonClicked] =
     useState(false);
 
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   let categoryIds = [];
-  const extractedCategories = useRef([]);
+
+  const extractedCategories = categories.map((category) => category.name);
 
   const [fileName, setFileName] = useState('');
 
   const [submitLoader, setSubmitLoader] = useState(false);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
-    console.log('Sending fetch req');
-    if (
-      !localStorage.getItem('token') &&
-      (!authCtx.isLoggedIn || authCtx.user.role === 'user')
-    ) {
-      router.push('/dashboard');
-      return () => {
-        console.log('aborting fetch');
-        abortController.abort();
-      };
-    }
-
-    fetch(`/api/category`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal: signal,
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          console.log(response);
-          throw new Error('Something went wrong!🥲');
-        }
-      })
-      .then((data) => {
-        setCategories(data.data.categories);
-        extractedCategories.current = [];
-        data.data.categories.map((category) => {
-          extractedCategories.current.push(category.name);
-        });
-        console.log('Categories Loaded');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [newCategoryButtonClicked]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -162,7 +114,7 @@ function UploadVideo() {
         <div>
           <MultipleSelectChip
             label="Categories"
-            names={extractedCategories.current}
+            names={extractedCategories}
             personName={selectedCategories}
             setPersonName={setSelectedCategories}
           />
@@ -203,3 +155,55 @@ function UploadVideo() {
 }
 
 export default UploadVideo;
+
+export const getServerSideProps = async (context) => {
+  const { req, res } = context;
+  if (!req.cookies.jwt) {
+    console.log('Cookie not found🍪🍪');
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  try {
+    const categoriesResponse = await fetch(`${server}/api/category`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.cookies.jwt}`,
+      },
+    });
+
+    let categories;
+    if (categoriesResponse.ok) {
+      const data = await categoriesResponse.json();
+      if (!data.data.categories) throw new Error('No categories found');
+      categories = data.data.categories;
+    } else {
+      // console.log(categoriesResponse);
+      throw new Error('Something went wrong!🥲');
+    }
+
+    return {
+      props: {
+        categories,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    redirect: {
+      destination: '/login',
+      permanent: false,
+    },
+  };
+};
