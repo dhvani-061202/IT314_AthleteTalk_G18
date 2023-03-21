@@ -1,1 +1,3 @@
-# IT314_AthleteTalk_G18
+# Initialized Project
+
+Initializing and setting up next.js boilderplate code.
