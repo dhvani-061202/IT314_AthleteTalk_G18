@@ -119,3 +119,44 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  //1) Get user based on POSTed email
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(new AppError('There is no user with email address.', 404));
+  }
+
+  //2) Generate random token
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  //3) Send it to user's email
+  const resetURL = `http://localhost:3000/api/users/resetPassword/${resetToken}`;
+
+  const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\n Didn't forget your password, please ignore this email.`;
+
+  return next(
+    new AppError('There was an error sending the email. Try again later.', 500)
+  );
+
+  // res.status(200).json({ status: 'success', message: 'Token sent to email!' });
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  //1) Get user from collection
+  const user = await User.findById(req.user.id).select('+password');
+
+  //2) Check if POSTed current password is correct
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+    return next(new AppError('Your current password is wrong.', 401));
+  }
+
+  //3) If so, update password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+
+  //4) Log user in, send JWT
+  this.createSendToken(user, 200, res);
+});
