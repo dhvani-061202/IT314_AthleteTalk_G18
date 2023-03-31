@@ -5,7 +5,7 @@ import { Grid } from '@mui/material';
 
 const BrowseVideos = ({ videos }) => {
   return (
-    <Grid container spacing={2} style={{ width: '80%', ml: '10%' }}>
+    <Grid container spacing={2}>
       {videos &&
         videos.length !== 0 &&
         videos.map((video, idx) => (

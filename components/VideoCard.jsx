@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 export default function VideoCard({ details }) {
   return (
-    <Card sx={{ maxWidth: 400 }}>
+    <Card sx={{ width: '20vw', height: '55vh' }}>
       <iframe
         src={`https://drive.google.com/file/d/${details.gDriveID}/preview`}
         style={{ minHeight: 230, width: '100%' }}
@@ -27,24 +27,27 @@ export default function VideoCard({ details }) {
         <Typography variant="body2" color="primary">
           Categories
         </Typography>
-        {details.categories.map((category, idx) => (
-          <Typography
-            key={idx}
-            sx={{
-              ml: 2,
-              mt: 0.5,
-              borderRadius: 5,
-              bgcolor: 'primary.light',
-              width: 'fit-content',
-              pl: 1,
-              pr: 1,
-            }}
-            variant="body2"
-            color="white"
-          >
-            {category.name}
-          </Typography>
-        ))}
+        {details.categories.map((category, idx) => {
+          if (idx < 3)
+            return (
+              <Typography
+                key={idx}
+                sx={{
+                  ml: 2,
+                  mt: 0.5,
+                  borderRadius: 5,
+                  bgcolor: 'primary.light',
+                  width: 'fit-content',
+                  pl: 1,
+                  pr: 1,
+                }}
+                variant="body2"
+                color="white"
+              >
+                {category.name}
+              </Typography>
+            );
+        })}
       </CardContent>
     </Card>
   );
