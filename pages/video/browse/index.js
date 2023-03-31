@@ -35,6 +35,8 @@ export async function getServerSideProps(context) {
     if (response.ok) {
       const data = await response.json();
       return { props: { videos: data.data.videos } };
+    } else {
+      throw new Error('something went wrong!');
     }
   } catch (err) {
     console.log(err);

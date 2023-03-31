@@ -26,19 +26,23 @@ handler.get(
 
     const uniqueVideoIds = [...new Set(allVideoIds)];
     const uniqueVideos = await Video.find({ _id: { $in: uniqueVideoIds } });
-
     let videoData = Object.assign(plan.videos);
+    let finalVideoData = [];
     for (let i = 0; i < videoData.length; i++) {
+      const tmp = [];
       videoData[i] = videoData[i].map((videoId) => {
-        return uniqueVideos.find((video) => video.id === videoId);
+        const x = uniqueVideos.find((video) => video.id === videoId.toString());
+        tmp.push(x);
+        return x;
       });
+      finalVideoData.push(tmp);
     }
 
     res.status(200).json({
       status: 'success',
       data: {
         plan,
-        planVideos: videoData,
+        planVideos: finalVideoData,
       },
     });
   })

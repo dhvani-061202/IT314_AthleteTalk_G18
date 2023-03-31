@@ -17,7 +17,6 @@ const { server } = require('./../../../utils/server');
 const PlanDetails = ({ plan, planVideos }) => {
   const router = useRouter();
   const theme = useTheme();
-  console.log(planVideos);
 
   const handleBack = (e) => {
     e.preventDefault();
@@ -65,7 +64,7 @@ const PlanDetails = ({ plan, planVideos }) => {
                 Day {idx + 1}
               </Typography>
               <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table sx={{}} aria-label="simple table">
                   <TableHead>
                     <TableRow>
                       <TableCell component={'th'}>No. </TableCell>
@@ -75,7 +74,9 @@ const PlanDetails = ({ plan, planVideos }) => {
                       return (
                         <TableRow key={idx}>
                           <TableCell>{idx + 1}</TableCell>
-                          <TableCell>{video.title}</TableCell>
+                          <TableCell sx={{ width: '80%' }}>
+                            {video.title}
+                          </TableCell>
                         </TableRow>
                       );
                     })}
@@ -114,6 +115,7 @@ export async function getServerSideProps(context) {
     if (!planResponse.ok)
       throw new Error('Something went wrong!🥲', planResponse);
     const planData = await planResponse.json();
+
     return {
       props: {
         plan: planData.data.plan,
