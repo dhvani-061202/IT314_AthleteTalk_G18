@@ -42,7 +42,6 @@ const BrowseVideos = ({ videos }) => {
       console.log(err);
       return { redirect: { destination: '/login', permanent: false } };
     }
-    return { redirect: { destination: '/login', permanent: false } };
   }
   
   export default BrowseVideos;
