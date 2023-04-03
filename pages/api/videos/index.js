@@ -31,7 +31,9 @@ handler.delete(
   authController.restrictTo('admin', 'coach'),
   catchAsync(async (req, res, next) => {
     res.status(200).json({ status: 'success', message: 'vidoe deleted' });
+    //
   })
 );
 
 export default handler;
+
