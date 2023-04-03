@@ -37,5 +37,28 @@ const CreatePlans = ({ categories, videos }) => {
       (category) => category._id
     );
     // console.log(filteredCateogries);
+    const plan = {
+      name: planName,
+      description: planDes,
+      categories: selectedCategoriesID,
+      noOfDays: noOfDays,
+      videos: videosSelected,
+    };
+
+    const postResponse = await fetch(`/api/plans`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(plan),
+    });
+
+    if (postResponse.ok) {
+      alert('Pland created successfully');
+    } else {
+      alert('Error creating plan');
+      console.log(postResponse);
+    }
   };
 };
