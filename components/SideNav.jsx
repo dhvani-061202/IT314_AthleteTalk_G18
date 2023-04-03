@@ -89,6 +89,13 @@ const SideNav = (props) => {
           <Typography variant="body2">Browse Plans</Typography>
         </MenuItem>
         <MenuItem
+          active={router.pathname === '/plans/myplan'}
+          component={<Link href="/plans/myplan" />}
+          icon={<AnalyticsOutlined />}
+        >
+          <Typography variant="body2">My Plans</Typography>
+        </MenuItem>
+        <MenuItem
           active={router.pathname === '/video/browse'}
           component={<Link href="/video/browse" />}
           icon={<AnalyticsOutlined />}
