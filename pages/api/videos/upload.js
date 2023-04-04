@@ -75,7 +75,6 @@ const uploadToGoogleDrive = async (file, auth) => {
   return response;
 };
 
-
 handler.post(
   authController.protect,
   authController.restrictTo('admin', 'coach'),
@@ -89,3 +88,19 @@ handler.post(
     //  response of the file uploaded.
     let file_response = await uploadToGoogleDrive(req.file, auth);
     // console.log(file_response);
+
+    // Create a new Video based on the req.body parameters
+    const newVideo = await Video.create({
+      title: req.body.title,
+      description: req.body.description,
+      gDriveID: file_response.data.id,
+      categories: categories,
+      uploader: req.user._id,
+    });
+
+    res.status(200).send({ status: 'success', data: { newVideo } });
+    // res.status(200).json({ status: 'success', message: 'dummy message' });
+  }
+);
+
+export default handler;
