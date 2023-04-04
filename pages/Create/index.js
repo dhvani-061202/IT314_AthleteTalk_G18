@@ -77,4 +77,19 @@ const CreatePlans = ({ categories, videos }) => {
       return newVideosSelected;
     });
   }, [noOfDays]);
+  const handleNext = () => {
+    if (currentPage == 0 || (currentPage == 1 && currentDay == noOfDays)) {
+      setCurrentPage((prev) => prev + 1);
+    } else if (currentPage == 1) {
+      setCurrentDay((prev) => prev + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentPage == 2 || (currentPage == 1 && currentDay == 1)) {
+      setCurrentPage((prev) => prev - 1);
+    } else if (currentPage == 1) {
+      setCurrentDay((prev) => prev - 1);
+    }
+  };
 };
