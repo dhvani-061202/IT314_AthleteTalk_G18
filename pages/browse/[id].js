@@ -127,3 +127,52 @@ const PlanDetails = ({ plan, planVideos, taken }) => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+  const { id } = context.query;
+  if (!req.cookies.jwt) {
+    console.log('Cookie not found🍪🍪');
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const planResponse = await fetch(`${server}/api/plans/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.cookies.jwt}`,
+      },
+    });
+    if (!planResponse.ok)
+      throw new Error('Something went wrong!🥲', planResponse);
+    const planData = await planResponse.json();
+
+    return {
+      props: {
+        plan: planData.data.plan,
+        planVideos: planData.data.planVideos,
+        taken: planData.data.taken,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
+
+export default PlanDetails;
