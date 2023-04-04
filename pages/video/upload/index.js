@@ -23,7 +23,7 @@ function UploadVideo({ categories }) {
       const file = {
         preview: URL.createObjectURL(e.target.files[0]),
         data: e.target.files[0],
-      };git 
+      };
       setFileName(e.target.value);
       setFile(file);
     };
@@ -141,5 +141,19 @@ function UploadVideo({ categories }) {
             categories,
           },
         };
-      } 
+      } catch (err) {
+        console.log(err);
+        return {
+          redirect: {
+            destination: '/login',
+            permanent: false,
+          },
+        };
+      }
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
     };
