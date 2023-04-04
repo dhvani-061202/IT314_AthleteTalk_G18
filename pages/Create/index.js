@@ -93,3 +93,61 @@ const CreatePlans = ({ categories, videos }) => {
     }
   };
 };
+  const page0 = (
+    <>
+      <TextField
+        margin="normal"
+        required
+        id="name"
+        label="Plan Name"
+        name="name"
+        autoComplete="name"
+        autoFocus
+        fullWidth
+        onChange={(e) => setPlanName(e.target.value)}
+        value={planName}
+      />
+
+      <TextField
+        margin="normal"
+        required
+        id="description"
+        label="Plan Description"
+        name="description"
+        autoComplete="description"
+        fullWidth
+        onChange={(e) => setPlanDes(e.target.value)}
+        value={planDes}
+      />
+
+      <TextField
+        margin="normal"
+        required
+        type="number"
+        id="noOfDays"
+        label="No of Days"
+        name="noOfDays"
+        autoComplete="No of Days"
+        fullWidth
+        inputProps={{ min: '0', max: '60' }}
+        onChange={(e) => {
+          setNoOfDays(e.target.value);
+        }}
+        value={noOfDays}
+      />
+      <br></br>
+      <br></br>
+      <MultipleSelectChip
+        label="Categories"
+        names={extractedCategories}
+        personName={selectedCategories}
+        setPersonName={setSelectedCategories}
+      />
+      <Typography variant="h6">Didn&apos;t find your category? </Typography>
+      <FormDialog
+        changeButtonClickState={setNewCategoryButtonClicked}
+        label="Add Category"
+        textPlaceHolder="Category Name"
+      />
+    </>
+  );
