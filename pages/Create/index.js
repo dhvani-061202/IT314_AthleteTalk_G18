@@ -37,6 +37,7 @@ const CreatePlans = ({ categories, videos }) => {
       (category) => category._id
     );
     // console.log(filteredCateogries);
+
     const plan = {
       name: planName,
       description: planDes,
@@ -61,6 +62,7 @@ const CreatePlans = ({ categories, videos }) => {
       console.log(postResponse);
     }
   };
+
   useEffect(() => {
     setVideosSelected((prev) => {
       const newVideosSelected = prev;
@@ -77,6 +79,7 @@ const CreatePlans = ({ categories, videos }) => {
       return newVideosSelected;
     });
   }, [noOfDays]);
+
   const handleNext = () => {
     if (currentPage == 0 || (currentPage == 1 && currentDay == noOfDays)) {
       setCurrentPage((prev) => prev + 1);
@@ -92,7 +95,7 @@ const CreatePlans = ({ categories, videos }) => {
       setCurrentDay((prev) => prev - 1);
     }
   };
-};
+
   const page0 = (
     <>
       <TextField
@@ -151,3 +154,144 @@ const CreatePlans = ({ categories, videos }) => {
       />
     </>
   );
+
+  const page1 = (
+    <>
+      <Typography variant="h4">Day {currentDay}</Typography>
+      <MultiSelectTable
+        rows={videos}
+        selectedVideos={videosSelected}
+        setVideosSelected={setVideosSelected}
+        day={currentDay - 1}
+      />
+    </>
+  );
+  const page2 = (
+    <>
+      <Typography variant="h3">Summary</Typography>
+      <Typography variant="h5">Plan Name: {planName}</Typography>
+      <Typography variant="h5">Description: {planDes}</Typography>
+      <Typography variant="h5">No of Days: {noOfDays}</Typography>
+      <Typography variant="h5">
+        Categories:{' '}
+        {selectedCategories.map((categories) => {
+          return categories + ', ';
+        })}
+      </Typography>
+      {videosSelected.map((vid, index) => {
+        return (
+          <Typography variant="h5" key={index}>
+            Day {index + 1}:{' '}
+            {vid.map((id) => {
+              const video = videos.find((video) => video.id == id);
+              return video.title + ', ';
+            })}
+          </Typography>
+        );
+      })}
+    </>
+  );
+
+  const pages = [page0, page1, page2];
+  return (
+    <>
+      <Typography variant="h3">Create Plans</Typography>
+      <Box
+        alignContent={'center'}
+        component="form"
+        noValidate
+        onSubmit={handleCreatePlans}
+        sx={{ mt: 1, width: '80%', ml: '10%' }}
+      >
+        {pages[currentPage]}
+        <br></br>
+        <Button variant="standard" onClick={handleBack}>
+          Back
+        </Button>
+        {currentPage != pages.length - 1 && (
+          <Button variant="contained" onClick={handleNext}>
+            Next
+          </Button>
+        )}
+        {currentPage == pages.length - 1 && (
+          <Button variant="contained" onClick={handleCreatePlans}>
+            Submit
+          </Button>
+        )}
+      </Box>
+    </>
+  );
+};
+
+export default CreatePlans;
+
+export const getServerSideProps = async (context) => {
+  const { req, res } = context;
+  if (!req.cookies.jwt) {
+    console.log('Cookie not found🍪🍪');
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  try {
+    const categoriesResponse = await fetch(`${server}/api/category`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.cookies.jwt}`,
+      },
+    });
+
+    let categories;
+    if (categoriesResponse.ok) {
+      const data = await categoriesResponse.json();
+      if (!data.data.categories) throw new Error('No categories found');
+      categories = data.data.categories;
+    } else {
+      // console.log(categoriesResponse);
+      throw new Error('Something went wrong!🥲');
+    }
+
+    const videosResponse = await fetch(`${server}/api/videos`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.cookies.jwt}`,
+      },
+    });
+
+    let videos;
+    if (videosResponse.ok) {
+      const data = await videosResponse.json();
+      if (!data.data.videos) throw new Error('No videos found');
+      videos = data.data.videos;
+    } else {
+      // console.log(videosResponse);
+      throw new Error('Something went wrong!🥲');
+    }
+
+    return {
+      props: {
+        categories,
+        videos,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    redirect: {
+      destination: '/login',
+      permanent: false,
+    },
+  };
+};
