@@ -1,4 +1,4 @@
 export const server =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
-    : 'https://se-project-test.vercel.app';
+    : process.env.NEXT_PUBLIC_API_URL;
