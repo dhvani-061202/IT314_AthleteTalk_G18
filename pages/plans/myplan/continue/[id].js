@@ -81,9 +81,16 @@ const ContinuePlan = ({ videos, day }) => {
         ></iframe>
       </Box>
       <Button onClick={handleBack}>Back</Button>
-      <Button variant="contained" onClick={handleStart}>
-        Next
-      </Button>
+      {currentVideo === videos.length - 1 && (
+        <Button variant="contained" onClick={handleStart}>
+          Finish
+        </Button>
+      )}
+      {currentVideo !== videos.length - 1 && (
+        <Button variant="contained" onClick={handleStart}>
+          Next
+        </Button>
+      )}
     </>
   );
   const finishPage = (
@@ -92,8 +99,14 @@ const ContinuePlan = ({ videos, day }) => {
         Congratulations! You have completed today`s task.
       </Typography>
       <Button onClick={handleBack}>Back</Button>
-      <Button variant="contained" onClick={handleStart}>
-        Next
+      <Button
+        variant="contained"
+        onClick={(e) => {
+          e.preventDefault();
+          router.push('/plans/myplan');
+        }}
+      >
+        Go to plans
       </Button>
     </>
   );

@@ -11,20 +11,20 @@ const handler = nc({
   onNoMatch: authController.handleNoMatch,
 });
 
-// handler.get(
-//   authController.protect,
-//   catchAsync(async (req, res, next) => {
-//     const plans = await Plan.find({}).populate('creator');
+handler.get(
+  authController.protect,
+  catchAsync(async (req, res, next) => {
+    const plans = await Plan.find({}).populate('creator');
 
-//     res.status(200).json({
-//       status: 'success',
-//       results: plans.length,
-//       data: {
-//         plans,
-//       },
-//     });
-//   })
-// );
+    res.status(200).json({
+      status: 'success',
+      results: plans.length,
+      data: {
+        plans,
+      },
+    });
+  })
+);
 
 handler.post(
   authController.protect,

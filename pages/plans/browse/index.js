@@ -78,6 +78,7 @@ export async function getServerSideProps(context) {
         },
       };
     } else {
+      console.log(plans);
       throw new Error('Something went wrong', plans);
     }
   } catch (err) {
