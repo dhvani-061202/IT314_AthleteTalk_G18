@@ -12,4 +12,17 @@ Home.getLayout = (page) => (
   </>
 );
 
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+
+  if (req.cookies.jwt) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
+}
+
 export default Home;

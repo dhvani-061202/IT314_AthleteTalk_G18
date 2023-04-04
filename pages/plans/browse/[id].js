@@ -12,16 +12,43 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useState } from 'react';
 const { server } = require('./../../../utils/server');
 
-const PlanDetails = ({ plan, planVideos }) => {
+const PlanDetails = ({ plan, planVideos, taken }) => {
   const router = useRouter();
   const theme = useTheme();
+  const [planTaken, setPlanTaken] = useState(taken);
 
   const handleBack = (e) => {
     e.preventDefault();
     router.back();
   };
+
+  const addPlanHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`${server}/api/user-plans`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          plan: plan._id,
+        }),
+      });
+      if (response.ok) {
+        setPlanTaken(true);
+      } else {
+        throw new Error('Something went wrong!: ', err);
+      }
+    } catch (err) {
+      console.log(err);
+      alert('err');
+    }
+  };
+
   return (
     <>
       <Button onClick={handleBack} variant="contained">
@@ -87,6 +114,16 @@ const PlanDetails = ({ plan, planVideos }) => {
           );
         })}
       </Box>
+      {!planTaken && (
+        <Button onClick={addPlanHandler} variant="contained">
+          Take
+        </Button>
+      )}
+      {planTaken && (
+        <Button disabled variant="contained">
+          Already Taken!
+        </Button>
+      )}
     </>
   );
 };
@@ -120,6 +157,7 @@ export async function getServerSideProps(context) {
       props: {
         plan: planData.data.plan,
         planVideos: planData.data.planVideos,
+        taken: planData.data.taken,
       },
     };
   } catch (err) {
