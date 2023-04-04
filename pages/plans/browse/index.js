@@ -69,13 +69,17 @@ export async function getServerSideProps(context) {
       },
     });
 
-    const data = await plans.json();
+    if (plans.ok) {
+      const data = await plans.json();
 
-    return {
-      props: {
-        plans: data.data.plans,
-      },
-    };
+      return {
+        props: {
+          plans: data.data.plans,
+        },
+      };
+    } else {
+      throw new Error('Something went wrong', response);
+    }
   } catch (err) {
     console.log(err);
     return {
