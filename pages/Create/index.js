@@ -236,7 +236,58 @@ export const getServerSideProps = async (context) => {
       },
     };
   }
-  
+  try {
+    const categoriesResponse = await fetch(`${server}/api/category`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.cookies.jwt}`,
+      },
+    });
+
+    let categories;
+    if (categoriesResponse.ok) {
+      const data = await categoriesResponse.json();
+      if (!data.data.categories) throw new Error('No categories found');
+      categories = data.data.categories;
+    } else {
+      // console.log(categoriesResponse);
+      throw new Error('Something went wrong!🥲');
+    }
+
+    const videosResponse = await fetch(`${server}/api/videos`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.cookies.jwt}`,
+      },
+    });
+
+    let videos;
+    if (videosResponse.ok) {
+      const data = await videosResponse.json();
+      if (!data.data.videos) throw new Error('No videos found');
+      videos = data.data.videos;
+    } else {
+      // console.log(videosResponse);
+      throw new Error('Something went wrong!🥲');
+    }
+
+    return {
+      props: {
+        categories,
+        videos,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
   return {
     redirect: {
       destination: '/login',
