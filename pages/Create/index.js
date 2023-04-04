@@ -61,4 +61,20 @@ const CreatePlans = ({ categories, videos }) => {
       console.log(postResponse);
     }
   };
+  useEffect(() => {
+    setVideosSelected((prev) => {
+      const newVideosSelected = prev;
+      let diff = noOfDays - prev.length;
+      while (diff !== 0) {
+        if (diff > 0) {
+          newVideosSelected.push([]);
+          diff--;
+        } else {
+          newVideosSelected.pop();
+          diff++;
+        }
+      }
+      return newVideosSelected;
+    });
+  }, [noOfDays]);
 };
