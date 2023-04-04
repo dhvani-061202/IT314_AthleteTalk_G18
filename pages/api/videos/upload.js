@@ -29,3 +29,17 @@ let storage = multer.diskStorage({
     callback(null, file.fieldname + '_' + Date.now() + '_' + file.originalname);
   },
 });
+
+let upload = multer({ storage: storage }).single('file');
+
+handler.use(upload);
+
+import { google } from 'googleapis';
+
+const authenticateGoogle = () => {
+  const auth = new google.auth.GoogleAuth({
+    keyFilename: path.resolve('./driveToken.json'),
+    scopes: 'https://www.googleapis.com/auth/drive',
+  });
+  return auth;
+};
