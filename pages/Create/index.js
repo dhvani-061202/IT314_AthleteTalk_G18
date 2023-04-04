@@ -224,3 +224,23 @@ const CreatePlans = ({ categories, videos }) => {
 };
 
 export default CreatePlans;
+
+export const getServerSideProps = async (context) => {
+  const { req, res } = context;
+  if (!req.cookies.jwt) {
+    console.log('Cookie not found🍪🍪');
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  
+  return {
+    redirect: {
+      destination: '/login',
+      permanent: false,
+    },
+  };
+};
