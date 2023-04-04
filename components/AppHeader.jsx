@@ -86,8 +86,11 @@ const AppHeader = () => {
 /** @type {import("@mui/material").SxProps} */
 const styles = {
   appBar: {
-    bgcolor: 'neutral.main',
+    bgcolor: '#34495e',
     zIndex: 1,
+    boxShadow: 'none',
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
   },
   appLogo: {
     ml: 1,

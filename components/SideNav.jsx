@@ -37,7 +37,11 @@ const SideNav = (props) => {
       backgroundColor={theme.palette.neutral.light}
     >
       <Box sx={styles.avatorContainer}>
-        <Avatar sx={styles.avatar} alt="Channel Name" src="/user.svg" />
+        <Avatar
+          sx={styles.avatar}
+          alt="Channel Name"
+          src={`https://api.dicebear.com/6.x/micah/svg?seed=${user?.name}+`}
+        />
         {!collapsed && (
           <Typography variant="body2" sx={styles.yourChannel}>
             {user ? user.name.toUpperCase() : ' '}
@@ -49,9 +53,12 @@ const SideNav = (props) => {
         menuItemStyles={{
           button: ({ active }) => {
             return {
-              backgroundColor: active
-                ? theme.palette.neutral.medium
-                : undefined,
+              backgroundColor: active ? '#496684' : undefined,
+              color: active ? '#fff' : undefined,
+              '&:hover': {
+                backgroundColor: '#496684',
+                color: '#fff',
+              },
             };
           },
         }}
@@ -125,6 +132,7 @@ const styles = {
   avatar: {
     width: '40%',
     height: 'auto',
+    // borderRadius: 0,
   },
   yourChannel: {
     mt: 1,
