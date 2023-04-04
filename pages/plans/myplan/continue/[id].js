@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import server from '../../../../server';
 
 const ContinuePlan = ({ videos, day }) => {
   const router = useRouter();
@@ -8,6 +9,7 @@ const ContinuePlan = ({ videos, day }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentVideo, setCurrentVideo] = useState(0);
   const [startTime, setStartTime] = useState(null);
+  const [score, setScore] = useState(0);
 
   const handleStart = (e) => {
     e.preventDefault();
@@ -47,6 +49,40 @@ const ContinuePlan = ({ videos, day }) => {
     }
   };
 
+  const handleFinish = async (e) => {
+    e.preventDefault();
+    const endTime = Date.now();
+
+    const timeTaken = endTime - startTime;
+
+    const body = {
+      day,
+      planID: router.query.id,
+      timeTaken,
+    };
+
+    try {
+      const updatePlanDay = await fetch(`${server}/api/plans/myplan`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (updatePlanDay.ok) {
+        const data = await updatePlanDay.json();
+        const score = data.data.score;
+        setScore(score);
+        setCurrentPage(2);
+      }
+    } catch (err) {
+      console.log(err);
+      router.push('/plans/myplan');
+    }
+  };
+
   const concentPage = (
     <Box>
       <Typography variant="h4">
@@ -82,7 +118,7 @@ const ContinuePlan = ({ videos, day }) => {
       </Box>
       <Button onClick={handleBack}>Back</Button>
       {currentVideo === videos.length - 1 && (
-        <Button variant="contained" onClick={handleStart}>
+        <Button variant="contained" onClick={handleFinish}>
           Finish
         </Button>
       )}
@@ -98,7 +134,7 @@ const ContinuePlan = ({ videos, day }) => {
       <Typography variant="h5">
         Congratulations! You have completed today`s task.
       </Typography>
-      <Button onClick={handleBack}>Back</Button>
+      <Typography variant="h6">Your score is: {score + ''}</Typography>
       <Button
         variant="contained"
         onClick={(e) => {

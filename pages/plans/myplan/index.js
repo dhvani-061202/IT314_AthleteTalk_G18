@@ -62,7 +62,7 @@ const MyPlans = ({ userPlans }) => {
                 }}
               >
                 <Typography variant="h6" sx={{ verticalAlign: 'middle' }}>
-                  Progress : {plan.progress / plan.plan.noOfDays}%
+                  Progress : {(plan.progress / plan.plan.noOfDays) * 100}%
                 </Typography>
               </Box>
               <CardContent>
