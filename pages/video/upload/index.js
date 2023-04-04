@@ -18,7 +18,55 @@ function UploadVideo({ categories }) {
   const [fileName, setFileName] = useState('');
   const [submitLoader, setSubmitLoader] = useState(false);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitLoader(true);
 
+    if (!title) return alert('Please provide a title for the video!');
+    if (!description)
+      return alert('Please provide a description for the video!');
+    if (!selectedCategories.length)
+      return alert('Please select at least one category for the video!');
+    if (!file) return alert('Please select a file to upload!');
+
+    categoryIds = [];
+    categories.find((category) => {
+      if (selectedCategories.includes(category.name)) {
+        categoryIds.push(category._id);
+      }
+    });
+
+    let formData = new FormData();
+    formData.append('file', file.data);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('categories', categoryIds);
+    console.log('Sending the video upload req');
+    fetch(`/api/videos/upload`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: formData,
+    })
+      .then((response) => {
+        setSubmitLoader(false);
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log(response);
+          throw new Error('Something went wrong!🥲');
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        alert('Video Uploaded Successfully!');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+  };
     const handleFileChange = (e) => {
       const file = {
         preview: URL.createObjectURL(e.target.files[0]),
