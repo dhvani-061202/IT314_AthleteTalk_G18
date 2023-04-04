@@ -53,11 +53,17 @@ const SideNav = (props) => {
         menuItemStyles={{
           button: ({ active }) => {
             return {
-              backgroundColor: active ? '#496684' : undefined,
+              background: active
+                ? ' linear-gradient(to right, #c5a5fe,#9256fd); '
+                : undefined,
               color: active ? '#fff' : undefined,
+              borderTopRightRadius: '25px',
+              borderBottomRightRadius: '25px',
               '&:hover': {
-                backgroundColor: '#496684',
+                background: 'linear-gradient(to right, #c5a5fe,#9256fd);',
                 color: '#fff',
+                borderTopRightRadius: '25px',
+                borderBottomRightRadius: '25px',
               },
             };
           },

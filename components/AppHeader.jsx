@@ -89,8 +89,8 @@ const styles = {
     bgcolor: '#34495e',
     zIndex: 1,
     boxShadow: 'none',
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
+    borderBottomLeftRadius: 7,
+    borderBottomRightRadius: 7,
   },
   appLogo: {
     ml: 1,

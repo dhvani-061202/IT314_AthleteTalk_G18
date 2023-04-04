@@ -14,7 +14,6 @@ const { server } = require('./../../../utils/server');
 const BrowsePlans = ({ plans }) => {
   return (
     <>
-      <div>BrowsePlans</div>
       <Grid container spacing={2}>
         {plans.map((plan, idx) => {
           return (

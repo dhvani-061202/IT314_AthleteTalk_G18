@@ -81,11 +81,17 @@ function UploadVideo({ categories }) {
   };
   return (
     <>
-      <Typography sx={{ p: 2, fontSize: '2rem' }}>Upload Video</Typography>
+      <Typography
+        sx={{ p: 2, fontSize: '2rem', width: 'fit-content', margin: 'auto' }}
+      >
+        Upload Video
+      </Typography>
       <Box
         component="form"
         sx={{
-          '& > :not(style)': { m: 1, width: '25ch' },
+          mt: 1,
+          width: '80%',
+          ml: '10%',
         }}
         noValidate
         autoComplete="off"
@@ -96,9 +102,11 @@ function UploadVideo({ categories }) {
             label="Title"
             varient="outlined"
             value={title}
+            fullWidth
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
+        <br></br>
         <div>
           <TextField
             id="outlined-basic"
@@ -106,11 +114,12 @@ function UploadVideo({ categories }) {
             varient="outlined"
             multiline
             maxRows={4}
-            sx={{ width: '150%' }}
+            fullWidth
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
+        <br></br>
         <div>
           <MultipleSelectChip
             label="Categories"
@@ -125,7 +134,11 @@ function UploadVideo({ categories }) {
             textPlaceHolder="Category Name"
           />
         </div>
+        <br></br>
         <div>
+          <Typography variant="h6" style={{ display: 'inline' }}>
+            Select a video file to upload: &nbsp;
+          </Typography>
           <Button variant="outlined" component="label" color="primary">
             Pick a File
             <input
@@ -137,6 +150,7 @@ function UploadVideo({ categories }) {
           </Button>
           {fileName.split('\\').pop()}
         </div>
+        <br></br>
         <div>
           {submitLoader && (
             <LoadingButton loading variant="outlined" disabled>

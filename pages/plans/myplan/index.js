@@ -37,7 +37,12 @@ const MyPlans = ({ userPlans }) => {
   const router = useRouter();
   return (
     <>
-      <Typography variant="h4">My Plans</Typography>
+      <Typography
+        sx={{ width: 'fit-content', margin: 'auto', mt: 1, mb: 2 }}
+        variant="h4"
+      >
+        My Plans
+      </Typography>
       <Grid container spacing={2}>
         {userPlans.map((plan, idx) => (
           <Grid item key={idx} xs={4}>
