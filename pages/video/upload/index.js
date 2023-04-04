@@ -12,6 +12,17 @@ function UploadVideo({ categories }) {
     const [fileName, setFileName] = useState('');
     const [submitLoader, setSubmitLoader] = useState(false);
 
+
+    const handleFileChange = (e) => {
+      const file = {
+        preview: URL.createObjectURL(e.target.files[0]),
+        data: e.target.files[0],
+      };
+      setFileName(e.target.value);
+      setFile(file);
+    };
+
+    
     return (
         <>
           <Typography sx={{ p: 2, fontSize: '2rem' }}>Upload Video</Typography>
