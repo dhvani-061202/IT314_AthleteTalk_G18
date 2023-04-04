@@ -151,3 +151,42 @@ const CreatePlans = ({ categories, videos }) => {
       />
     </>
   );
+
+  const page1 = (
+    <>
+      <Typography variant="h4">Day {currentDay}</Typography>
+      <MultiSelectTable
+        rows={videos}
+        selectedVideos={videosSelected}
+        setVideosSelected={setVideosSelected}
+        day={currentDay - 1}
+      />
+    </>
+  );
+  const page2 = (
+    <>
+      <Typography variant="h3">Summary</Typography>
+      <Typography variant="h5">Plan Name: {planName}</Typography>
+      <Typography variant="h5">Description: {planDes}</Typography>
+      <Typography variant="h5">No of Days: {noOfDays}</Typography>
+      <Typography variant="h5">
+        Categories:{' '}
+        {selectedCategories.map((categories) => {
+          return categories + ', ';
+        })}
+      </Typography>
+      {videosSelected.map((vid, index) => {
+        return (
+          <Typography variant="h5" key={index}>
+            Day {index + 1}:{' '}
+            {vid.map((id) => {
+              const video = videos.find((video) => video.id == id);
+              return video.title + ', ';
+            })}
+          </Typography>
+        );
+      })}
+    </>
+  );
+
+  const pages = [page0, page1, page2];
