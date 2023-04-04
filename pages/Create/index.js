@@ -37,6 +37,7 @@ const CreatePlans = ({ categories, videos }) => {
       (category) => category._id
     );
     // console.log(filteredCateogries);
+
     const plan = {
       name: planName,
       description: planDes,
@@ -61,6 +62,7 @@ const CreatePlans = ({ categories, videos }) => {
       console.log(postResponse);
     }
   };
+
   useEffect(() => {
     setVideosSelected((prev) => {
       const newVideosSelected = prev;
@@ -77,6 +79,7 @@ const CreatePlans = ({ categories, videos }) => {
       return newVideosSelected;
     });
   }, [noOfDays]);
+
   const handleNext = () => {
     if (currentPage == 0 || (currentPage == 1 && currentDay == noOfDays)) {
       setCurrentPage((prev) => prev + 1);
@@ -92,7 +95,7 @@ const CreatePlans = ({ categories, videos }) => {
       setCurrentDay((prev) => prev - 1);
     }
   };
-};
+
   const page0 = (
     <>
       <TextField
@@ -190,3 +193,34 @@ const CreatePlans = ({ categories, videos }) => {
   );
 
   const pages = [page0, page1, page2];
+  return (
+    <>
+      <Typography variant="h3">Create Plans</Typography>
+      <Box
+        alignContent={'center'}
+        component="form"
+        noValidate
+        onSubmit={handleCreatePlans}
+        sx={{ mt: 1, width: '80%', ml: '10%' }}
+      >
+        {pages[currentPage]}
+        <br></br>
+        <Button variant="standard" onClick={handleBack}>
+          Back
+        </Button>
+        {currentPage != pages.length - 1 && (
+          <Button variant="contained" onClick={handleNext}>
+            Next
+          </Button>
+        )}
+        {currentPage == pages.length - 1 && (
+          <Button variant="contained" onClick={handleCreatePlans}>
+            Submit
+          </Button>
+        )}
+      </Box>
+    </>
+  );
+};
+
+export default CreatePlans;
