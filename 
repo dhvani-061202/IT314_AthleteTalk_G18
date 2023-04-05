@@ -1,0 +1,156 @@
+[33mcommit 63cac1c536e11240a65289bddcac31daa27c6b6a[m[33m ([m[1;36mHEAD -> [m[1;32mvideofeature[m[33m, [m[1;31morigin/videofeature[m[33m)[m
+Author: unknown <202001174@daiict.ac.in>
+Date:   Sat Apr 1 23:54:13 2023 +0530
+
+    Added Browsing Video functionality
+
+[33mcommit 81a5641751324225494a577aed3af3789e4a7329[m
+Author: unknown <202001174@daiict.ac.in>
+Date:   Sat Apr 1 23:52:04 2023 +0530
+
+    Added Browsing Video functionality
+
+[33mcommit d891baf20918f79e6d5bf7f9f7c88d0c5044ed48[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Merge: 8d83d1b 6023361
+Author: NeelPoriya <97659555+NeelPoriya1309@users.noreply.github.com>
+Date:   Sat Apr 1 15:37:58 2023 +0530
+
+    Merge pull request #2 from Login branch
+    
+    Login
+
+[33mcommit 8d83d1b1e2ca56647f119ecd48503735d75f1fa7[m
+Merge: 765f0fc 458354f
+Author: NeelPoriya <97659555+NeelPoriya1309@users.noreply.github.com>
+Date:   Sat Apr 1 15:36:54 2023 +0530
+
+    Merge pull request #1 from dhvani-061202/UserAuth
+    
+    User auth
+
+[33mcommit 458354fe55f2e9ca0e28066871d5bde0beea6d92[m[33m ([m[1;31morigin/UserAuth[m[33m)[m
+Merge: 76f1153 765f0fc
+Author: NeelPoriya <97659555+NeelPoriya1309@users.noreply.github.com>
+Date:   Sat Apr 1 15:36:45 2023 +0530
+
+    Merge branch 'main' into UserAuth
+
+[33mcommit 76f11539a36df2c034c59de587a90e1d05dcf4d4[m
+Author: Khush Patel <202001127@daiict.ac.in>
+Date:   Thu Mar 23 17:11:54 2023 +0530
+
+    added user folder in api for authentication fetures
+
+[33mcommit 60233612ca80ccb3011aa5e81784f2f7cf69433f[m[33m ([m[1;31morigin/Login[m[33m)[m
+Author: Parth2563 <202001147@daiict.ac.in>
+Date:   Thu Mar 23 16:18:32 2023 +0530
+
+    Adding Forget and Update Password Functionality
+
+[33mcommit 274a5672e4d8ee48dd2b19659806ffb36ed364d4[m
+Author: Parth2563 <202001147@daiict.ac.in>
+Date:   Wed Mar 22 15:50:33 2023 +0530
+
+    Add authentication and error handling middleware functions
+
+[33mcommit 2dbc264e87a193555a58540a16ea9ba3ff34e524[m
+Author: Khush Patel <202001127@daiict.ac.in>
+Date:   Wed Mar 22 14:38:59 2023 +0530
+
+    created custom error class and class for catching asyncronous function and default server settings - Khush Patel
+
+[33mcommit 9088ccfd3f48d6b04d0540d59ff9e1f5e9bf89be[m
+Author: Khush Patel <202001127@daiict.ac.in>
+Date:   Wed Mar 22 14:22:49 2023 +0530
+
+    Added just an erorr page -Khush Patel
+
+[33mcommit 6c8bd13f35e0db8e876c8674c759c76d73888b6b[m
+Author: Khush Patel <202001127@daiict.ac.in>
+Date:   Wed Mar 22 14:20:07 2023 +0530
+
+    Added signup option -Khush Patel
+
+[33mcommit 6fd9d064363aa26fe9e49633737f82399f854b62[m
+Author: Parth2563 <202001147@daiict.ac.in>
+Date:   Tue Mar 21 22:02:14 2023 +0530
+
+    Adding Login Functionality_Parth
+
+[33mcommit 2d273ce22f920bf345412184815fbfc58723be83[m
+Author: Khush Patel <202001127@daiict.ac.in>
+Date:   Tue Mar 21 21:47:53 2023 +0530
+
+    Add AuthContext and AuthContextProvider components for user authentication.- Khush Patel
+
+[33mcommit 765f0fcfba79b8ede8def9677c16d6c36781f4b8[m
+Author: NeelPoriya1309 <202001139@daiict.ac.in>
+Date:   Tue Mar 21 21:05:22 2023 +0530
+
+    Added Database models: User
+
+[33mcommit bbc4092c8a3bf2e7d81c5c0a853aaba1e842eda3[m
+Author: Khush Patel <202001127@daiict.ac.in>
+Date:   Tue Mar 21 21:01:18 2023 +0530
+
+    User Model created -Khush Patel
+
+[33mcommit 434eec68372e6e38749171700b98c4702015692d[m[33m ([m[1;31morigin/test-db-connection-neel[m[33m)[m
+Author: NeelPoriya1309 <202001139@daiict.ac.in>
+Date:   Tue Mar 21 20:09:05 2023 +0530
+
+    Database Connected
+
+[33mcommit 9abc051312596c35bb187dc96ee2fe987ad9e989[m
+Author: NeelPoriya1309 <202001139@daiict.ac.in>
+Date:   Tue Mar 21 18:55:34 2023 +0530
+
+    Initial Next.js Project
+
+[33mcommit 7843d28e66190a5e250282819050c34f6c243d82[m
+Author: NeelPoriya1309 <202001139@daiict.ac.in>
+Date:   Tue Mar 21 18:53:10 2023 +0530
+
+    Testing remote access
+
+[33mcommit 9675a7c4cce6c30ae466683f0a7c93b99150abc5[m
+Author: Dhvani Upadhyay <104089036+dhvani-061202@users.noreply.github.com>
+Date:   Thu Mar 9 15:26:22 2023 +0530
+
+    Add files via upload
+
+[33mcommit 532c7019bee1a0ec3bbc9ff732920400c4f03995[m
+Author: Dhvani Upadhyay <104089036+dhvani-061202@users.noreply.github.com>
+Date:   Thu Mar 9 15:25:31 2023 +0530
+
+    Delete IT314_project_G18_Lab4.pdf
+
+[33mcommit dc70a306a0c248d608d0468911c2984016429353[m
+Author: Dhvani Upadhyay <104089036+dhvani-061202@users.noreply.github.com>
+Date:   Thu Mar 9 15:24:00 2023 +0530
+
+    Add files via upload
+
+[33mcommit a229090e7d00e0e4c37c934a67d1ad177d86d559[m
+Author: Dhvani Upadhyay <104089036+dhvani-061202@users.noreply.github.com>
+Date:   Thu Feb 23 16:23:48 2023 +0530
+
+    Add files via upload
+
+[33mcommit 4abb9eb36e35dc502fe377336fdd63678b833dd8[m
+Author: Dhvani Upadhyay <104089036+dhvani-061202@users.noreply.github.com>
+Date:   Thu Feb 23 15:30:08 2023 +0530
+
+    Update README.md
+
+[33mcommit 50de5a0a24df1be68fa610413d8b4c41b6b3e9e5[m
+Author: Dhvani Upadhyay <104089036+dhvani-061202@users.noreply.github.com>
+Date:   Thu Feb 9 16:37:10 2023 +0530
+
+    Add files via upload
+
+[33mcommit ca033a653fea52d94ee247f282fd75c8f2c9d20d[m
+Author: Dhvani Upadhyay <104089036+dhvani-061202@users.noreply.github.com>
+Date:   Thu Feb 9 14:14:15 2023 +0530
+
+    Initial commit
