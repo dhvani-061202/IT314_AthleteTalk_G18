@@ -28,7 +28,7 @@ const BrowsePlans = ({ plans }) => {
                     variant="p"
                     sx={{ display: 'block' }}
                   >
-                    {plan.description + plan.description}
+                    {plan.description}
                   </Typography>
                   <Typography color="text.primary" variant="body1">
                     <b>Created By</b>: {plan.creator.name}
