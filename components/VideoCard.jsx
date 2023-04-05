@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 export default function VideoCard({ details }) {
   return (
-    <Card sx={{ width: '20vw', height: '55vh' }}>
+    <Card sx={{}}>
       <iframe
         src={`https://drive.google.com/file/d/${details.gDriveID}/preview`}
         style={{ minHeight: 230, width: '100%' }}

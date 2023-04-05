@@ -9,7 +9,7 @@ const BrowseVideos = ({ videos }) => {
       {videos &&
         videos.length !== 0 &&
         videos.map((video, idx) => (
-          <Grid key={idx} item>
+          <Grid key={idx} xs={4} item>
             <VideoCard details={video} />
           </Grid>
         ))}

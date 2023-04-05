@@ -8,10 +8,12 @@ import {
   Typography,
 } from '@mui/material';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 const { server } = require('./../../../utils/server');
 
 const BrowsePlans = ({ plans }) => {
+  const router = useRouter();
   return (
     <>
       <Grid container spacing={2}>
@@ -21,23 +23,31 @@ const BrowsePlans = ({ plans }) => {
               <Card sx={{ minWidth: 275 }}>
                 <CardContent>
                   <Typography color="text.primary" variant="h5" gutterBottom>
-                    {plan.name}
+                    {plan.name.slice(0, 30) +
+                      (plan.name.length > 30 ? '...' : '')}
                   </Typography>
                   <Typography
                     color="text.primary"
                     variant="p"
                     sx={{ display: 'block' }}
                   >
-                    {plan.description}
+                    {plan.description.slice(0, 45) +
+                      (plan.description.length > 45 ? '...' : '')}
                   </Typography>
                   <Typography color="text.primary" variant="body1">
                     <b>Created By</b>: {plan.creator.name}
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Link href={`/plans/browse/${plan._id}`} size="small">
+                  <Button
+                    variant="contained"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/plans/browse/${plan._id}`);
+                    }}
+                  >
                     View Details
-                  </Link>
+                  </Button>
                 </CardActions>
               </Card>
             </Grid>
