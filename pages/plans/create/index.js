@@ -193,9 +193,12 @@ const CreatePlans = ({ categories, videos }) => {
   );
 
   const pages = [page0, page1, page2];
+
   return (
     <>
-      <Typography variant="h3">Create Plans</Typography>
+      <Typography sx={{ width: 'fit-content', margin: 'auto' }} variant="h3">
+        Create Plans
+      </Typography>
       <Box
         alignContent={'center'}
         component="form"
