@@ -29,6 +29,46 @@ export default function FormDialog({
     setOpen(false);
   };
 
+  const handleAdd = (e) => {
+    setLoading(true);
+    if (value === "") {
+      alert(`Please enter a value for ${textPlaceHolder}`);
+      return;
+    }
+
+    fetch(`/api/category`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${authCtx.token}`,
+      },
+      body: JSON.stringify({
+        name: value,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setValue("");
+          return response.json();
+        } else {
+          alert("Error adding category");
+          throw new Error("Error adding category");
+        }
+      })
+      .then((data) => {
+        setOpen(false);
+        alert("Category added successfully");
+        router.replace(router.asPath);
+        changeButtonClickState((prev) => !prev);
+        // console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setLoading(false);
+  };
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
