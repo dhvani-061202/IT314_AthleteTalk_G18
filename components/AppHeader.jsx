@@ -46,9 +46,9 @@ const AppHeader = () => {
           {loggedIn && (
             <>
               <IconButton title="Notifications" color="secondary">
-                <Badge badgeContent={14} color="error">
-                  <Notifications />
-                </Badge>
+                {/* <Badge badgeContent={} color="error"> */}
+                <Notifications />
+                {/* </Badge> */}
               </IconButton>
               <IconButton title="Settings" color="secondary">
                 <Settings />
