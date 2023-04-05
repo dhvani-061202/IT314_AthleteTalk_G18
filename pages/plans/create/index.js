@@ -46,8 +46,8 @@ const CreatePlans = ({ categories, videos }) => {
       videos: videosSelected,
     };
 
-    console.log(`${server}/api/plans`);
-    const postResponse = await fetch(`${server}/api/plans`, {
+    console.log(`/api/plans`);
+    const postResponse = await fetch(`/api/plans`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

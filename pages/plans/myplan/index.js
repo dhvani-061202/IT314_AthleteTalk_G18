@@ -34,6 +34,7 @@ const gradients = [
 ];
 
 const MyPlans = ({ userPlans }) => {
+  console.log(userPlans);
   const router = useRouter();
   return (
     <>

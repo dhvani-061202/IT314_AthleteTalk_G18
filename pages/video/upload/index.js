@@ -81,15 +81,13 @@ function UploadVideo({ categories }) {
   };
   return (
     <>
-      <Typography
-        sx={{ p: 2, fontSize: '2rem', width: 'fit-content', margin: 'auto' }}
-      >
+      <Typography sx={{ width: 'fit-content', margin: 'auto' }} variant="h3">
         Upload Video
       </Typography>
       <Box
         component="form"
         sx={{
-          mt: 1,
+          mt: 2,
           width: '80%',
           ml: '10%',
         }}
