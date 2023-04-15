@@ -1,18 +1,58 @@
 import { Grid } from '@mui/material';
+import MyChats from '../../components/MyChats';
+import ChatBox from '../../components/ChatBox';
+import { useState } from 'react';
 
-const CommunityChat = () => {
+const CommunityChat = ({ chats }) => {
+  // console.log(chats);
+  const [activeChatBox, setActiveChatBox] = useState('');
+  const [allChats, setAllChats] = useState(chats);
+
   return (
     <>
       <Grid sx={{ height: '100%' }} container>
         <Grid item xs={3}>
-          My Chats
+          <MyChats
+            chats={allChats}
+            setActiveChatBox={setActiveChatBox}
+            setAllChats={setAllChats}
+          />
         </Grid>
         <Grid item xs={9}>
-          Chat Box
+          <ChatBox chatBox={activeChatBox} chats={{}} />
         </Grid>
       </Grid>
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+
+  if (!req.cookies.jwt) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  const chat = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${req.cookies.jwt}`,
+    },
+  });
+
+  const chatData = await chat.json();
+
+  return {
+    props: {
+      chats: chatData.data.chats,
+    },
+  };
+}
 
 export default CommunityChat;

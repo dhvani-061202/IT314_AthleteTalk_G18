@@ -4,7 +4,7 @@ body {
   height: 100%;
   box-sizing: border-box;
   text-rendering: optimizeLegibility;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 #__next {
