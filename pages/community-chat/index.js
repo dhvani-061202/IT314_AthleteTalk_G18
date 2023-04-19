@@ -14,12 +14,13 @@ const CommunityChat = ({ chats }) => {
         <Grid item xs={3}>
           <MyChats
             chats={allChats}
+            activeChatBox={activeChatBox}
             setActiveChatBox={setActiveChatBox}
             setAllChats={setAllChats}
           />
         </Grid>
         <Grid item xs={9}>
-          <ChatBox chatBox={activeChatBox} chats={{}} />
+          <ChatBox selectedChat={activeChatBox} chats={{}} />
         </Grid>
       </Grid>
     </>

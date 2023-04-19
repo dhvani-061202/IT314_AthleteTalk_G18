@@ -1,12 +1,12 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 
-const ChatBox = ({ chatBox }) => {
+const ChatBox = ({ selectedChat }) => {
   return (
     <>
       <Box>
         <Typography variant="h4">ChatBox</Typography>
-        Showing chats for {chatBox}
+        Showing chats for {selectedChat}
       </Box>
     </>
   );

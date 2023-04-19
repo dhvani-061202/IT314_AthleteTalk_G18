@@ -15,6 +15,8 @@ import {
   Snackbar,
   Alert,
   Avatar,
+  Stack,
+  Icon,
 } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import { server } from '../utils/server';
@@ -22,6 +24,9 @@ import Image from 'next/image';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRef } from 'react';
+import SimpleSnackbar from '../components/SimpleSnackbar';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { PersonAdd } from '@mui/icons-material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -52,7 +57,11 @@ export default function NewGroupChatDialog({ setAllChats }) {
 
     // create group chat
     if (selectedUsers.length < 2) {
-      alert('Please select at least two user');
+      // alert('Please select at least two user');
+      setSnackbarMessage('Please select at least two user');
+      setSnackbarSeverity('warning');
+      setOpenSnackbar(true);
+      return;
     }
 
     const selectedUsersId = selectedUsers.map((user) => user.id);
@@ -77,13 +86,17 @@ export default function NewGroupChatDialog({ setAllChats }) {
       setAllChats((prevChats) => {
         return [newChat.data.chat, ...prevChats];
       });
-      alert('Group chat created');
+      setSnackbarMessage('Group chat created');
+      setSnackbarSeverity('success');
+      setOpenSnackbar(true);
     } else {
       console.log(createGroupReq);
-      alert('Something went wrong');
+      setSnackbarMessage('Something went wrong');
+      setSnackbarSeverity('error');
+      setOpenSnackbar(true);
     }
 
-    setOpen(false);
+    handleClose();
   };
 
   const handleSearch = async (query) => {
@@ -110,10 +123,26 @@ export default function NewGroupChatDialog({ setAllChats }) {
 
       setQueriedUsers(queriedUsersData.users);
     } catch (error) {
-      alert(error);
+      setOpenSnackbar(true);
+      setSnackbarMessage('Fetching users failed');
+      setSnackbarSeverity('error');
+
+      // alert(error);
     }
 
     setLoading(false);
+  };
+
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
+
+  const onClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnackbar(false);
   };
 
   return (
@@ -250,21 +279,35 @@ export default function NewGroupChatDialog({ setAllChats }) {
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={(e) => setSnackbarOpen(false)}
+      <Box
+        sx={{
+          borderRadius: '50%',
+          bgcolor: '#74b9ff',
+          width: '40px',
+          height: '40px',
+          cursor: 'pointer',
+        }}
       >
-        <Alert
-          elevation={6}
-          variant="filled"
-          onClose={(e) => setSnackbarOpen(false)}
-          severity="error"
-          sx={{ width: '100%' }}
-        >
-          Please enter the chat name
-        </Alert>
-      </Snackbar>
+        <Icon
+          component={PersonAddIcon}
+          sx={{
+            color: '#fff',
+            width: '25px',
+            height: '25px',
+            margin: '5px',
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            console.log('add user chat');
+          }}
+        />
+      </Box>
+      <SimpleSnackbar
+        open={openSnackbar}
+        handleClose={onClose}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </div>
   );
 }

@@ -10,7 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import React from 'react';
 import NewGroupChatDialog from './NewGroupChatDialog';
 
-const MyChats = ({ chats, setActiveChatBox, setAllChats }) => {
+const MyChats = ({ chats, setActiveChatBox, activeChatBox, setAllChats }) => {
   const handleChatSelect = (e) => {
     setActiveChatBox(e.target.value);
   };
@@ -42,7 +42,11 @@ const MyChats = ({ chats, setActiveChatBox, setAllChats }) => {
             <Button
               variant="standard"
               fullWidth
-              sx={{ justifyContent: 'left', backgroundColor: '#eee' }}
+              sx={{
+                justifyContent: 'left',
+                backgroundColor:
+                  activeChatBox === chat.chatName ? '#74b9ff' : '#eee',
+              }}
               value={chat.chatName}
               onClick={handleChatSelect}
             >
