@@ -1,12 +1,31 @@
 import { Grid } from '@mui/material';
 import MyChats from '../../components/MyChats';
 import ChatBox from '../../components/ChatBox';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const CommunityChat = ({ chats }) => {
   // console.log(chats);
-  const [activeChatBox, setActiveChatBox] = useState('');
+  const [activeChatBox, setActiveChatBox] = useState({});
   const [allChats, setAllChats] = useState(chats);
+  const [fetchAgain, setFetchAgain] = useState(false);
+
+  const fetchChats = async () => {
+    const chat = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const chatData = await chat.json();
+
+    setAllChats(chatData.data.chats);
+  };
+
+  useEffect(() => {
+    fetchChats();
+  }, [fetchAgain]);
 
   return (
     <>
@@ -17,10 +36,17 @@ const CommunityChat = ({ chats }) => {
             activeChatBox={activeChatBox}
             setActiveChatBox={setActiveChatBox}
             setAllChats={setAllChats}
+            fetchAgain={fetchAgain}
           />
         </Grid>
         <Grid item xs={9}>
-          <ChatBox selectedChat={activeChatBox} chats={{}} />
+          <ChatBox
+            selectedChat={activeChatBox}
+            chats={{}}
+            setFetchAgain={setFetchAgain}
+            fetchAgain={fetchAgain}
+            setSelectedChat={setActiveChatBox}
+          />
         </Grid>
       </Grid>
     </>

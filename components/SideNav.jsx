@@ -70,6 +70,7 @@ const SideNav = (props) => {
         }}
       >
         <MenuItem
+          data-testid="dashboard"
           active={router.pathname === '/dashboard'}
           component={<Link href="/dashboard" />}
           icon={<DashboardOutlined />}
