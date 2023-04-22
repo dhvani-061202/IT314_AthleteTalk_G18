@@ -11,6 +11,10 @@ import React from 'react';
 import NewGroupChatDialog from './NewGroupChatDialog';
 
 const MyChats = ({ chats, setActiveChatBox, activeChatBox, setAllChats }) => {
+  const handleChatSelect = (e) => {
+    setActiveChatBox(e.target.value);
+  };
+
   return (
     <Paper elevation={1} sx={{ height: '100%' }}>
       <Box
@@ -44,9 +48,7 @@ const MyChats = ({ chats, setActiveChatBox, activeChatBox, setAllChats }) => {
                   activeChatBox === chat.chatName ? '#74b9ff' : '#eee',
               }}
               value={chat.chatName}
-              onClick={(e) => {
-                setActiveChatBox(chat);
-              }}
+              onClick={handleChatSelect}
             >
               {chat.chatName}
             </Button>
