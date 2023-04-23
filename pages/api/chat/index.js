@@ -1,6 +1,3 @@
-import Chat from '../../../models/chatModel';
-import User from '../../../models/userModel';
-
 const nc = require('next-connect');
 const authController = require('../../../controllers/authController');
 const catchAsync = require('../../../utils/catchAsync');
