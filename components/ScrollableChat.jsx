@@ -110,6 +110,7 @@ const ScrollableChat = ({ messages }) => {
             </Box>
           );
         })}
+      <br></br>
     </ScrollableFeed>
   );
 };
@@ -124,7 +125,7 @@ const styles = {
   },
   avatar: {
     width: '40px',
-    height: 'auto',
+    height: '40px',
     // borderRadius: 0,
   },
   yourChannel: {

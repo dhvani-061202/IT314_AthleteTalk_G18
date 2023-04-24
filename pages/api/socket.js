@@ -14,12 +14,16 @@ export default function SocketHandler(req, res) {
     socket.on('setup', (user) => {
       console.log('Setting up user: ' + user.name + ' with id: ' + user._id);
       socket.join(user._id);
+      socket.emit('connection');
     });
 
     socket.on('join chat', (room) => {
       socket.join(room);
       console.log('Joined room: ' + room);
     });
+
+    socket.on('typing', (room) => socket.in(room).emit('typing'));
+    socket.on('stop typing', (room) => socket.in(room).emit('stop typing'));
 
     socket.on('new message', (newMessage) => {
       var chat = newMessage.chat;

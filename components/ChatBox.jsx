@@ -36,15 +36,21 @@ const ChatBox = ({ selectedChat }) => {
 
     socket = io();
     socket.emit('setup', user);
+    socket.on('connection', () => setSocketConnected(true));
+    socket.on('typing', () => setIsTyping(true));
+    socket.on('stop typing', () => setIsTyping(false));
   }
 
   const [socketConnected, setSocketConnected] = useState(false);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
   const sendMessage = async (e) => {
     if (e.key === 'Enter' && newMessage) {
+      socket.emit('stop typing', selectedChat._id);
       // Send message to server
       try {
         setNewMessage('');
@@ -93,6 +99,22 @@ const ChatBox = ({ selectedChat }) => {
   };
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
+
+    if (!socketConnected) return;
+    if (!typing) {
+      setTyping(true);
+      socket.emit('typing', selectedChat._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit('stop typing', selectedChat._id);
+        setTyping(false);
+      }
+    }, timerLength);
   };
 
   useEffect(() => {
@@ -138,6 +160,7 @@ const ChatBox = ({ selectedChat }) => {
         bgcolor={'#fff'}
         width={'100%'}
         height={'100%'}
+        // maxHeight={'100%'}
         borderRadius={'lg'}
         sx={{ overflowY: 'hidden' }}
       >
@@ -152,11 +175,13 @@ const ChatBox = ({ selectedChat }) => {
                 flexDirection: 'column',
                 overflowY: 'scroll',
                 scrollbarWidth: 'none',
+                maxHeight: '72vh',
               }}
             >
               <ScrollableChat messages={messages} />
             </Box>
             <FormControl fullWidth>
+              {isTyping && <p>Typing...</p>}
               <TextField
                 onKeyDown={sendMessage}
                 fullWidth

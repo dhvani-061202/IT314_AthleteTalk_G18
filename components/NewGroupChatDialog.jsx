@@ -279,29 +279,6 @@ export default function NewGroupChatDialog({ setAllChats }) {
           </Button>
         </DialogActions>
       </Dialog>
-      <Box
-        sx={{
-          borderRadius: '50%',
-          bgcolor: '#74b9ff',
-          width: '40px',
-          height: '40px',
-          cursor: 'pointer',
-        }}
-      >
-        <Icon
-          component={PersonAddIcon}
-          sx={{
-            color: '#fff',
-            width: '25px',
-            height: '25px',
-            margin: '5px',
-          }}
-          onClick={(e) => {
-            e.preventDefault();
-            console.log('add user chat');
-          }}
-        />
-      </Box>
       <SimpleSnackbar
         open={openSnackbar}
         handleClose={onClose}
