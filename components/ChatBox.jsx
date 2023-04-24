@@ -33,7 +33,7 @@ const ChatBox = ({ selectedChat }) => {
 
   async function socketInitializer() {
     console.log('creating socket connection');
-    await fetch(`${server}/api/socket`);
+    await fetch(`/api/socket`);
 
     socket = io();
     socket.emit('setup', user);
