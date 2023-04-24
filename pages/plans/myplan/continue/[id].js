@@ -62,7 +62,7 @@ const ContinuePlan = ({ videos, day }) => {
     };
 
     try {
-      const updatePlanDay = await fetch(`${server}/api/plans/myplan`, {
+      const updatePlanDay = await fetch(`/api/plans/myplan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

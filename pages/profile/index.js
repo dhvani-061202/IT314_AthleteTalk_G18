@@ -17,7 +17,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchUser = async () => {
-    const response = await fetch(`${server}/api/users`, {
+    const response = await fetch(`/api/users`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ const Profile = () => {
 
   const handleUpdate = async () => {
     setLoading(true);
-    const response = await fetch(`${server}/api/users`, {
+    const response = await fetch(`/api/users`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

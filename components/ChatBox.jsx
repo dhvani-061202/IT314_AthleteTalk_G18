@@ -176,13 +176,13 @@ const ChatBox = ({ selectedChat }) => {
                 flexDirection: 'column',
                 overflowY: 'scroll',
                 scrollbarWidth: 'none',
-                maxHeight: '72vh',
+                maxHeight: isTyping ? '65vh' : '72vh',
               }}
             >
               <ScrollableChat messages={messages} />
             </Box>
+            {isTyping && <p>Typing...</p>}
             <FormControl fullWidth>
-              {isTyping && <p>Typing...</p>}
               <TextField
                 onKeyDown={sendMessage}
                 fullWidth
