@@ -50,7 +50,13 @@ const AppHeader = () => {
                 <Notifications />
                 {/* </Badge> */}
               </IconButton>
-              <IconButton title="Settings" color="secondary">
+              <IconButton
+                onClick={(e) => {
+                  router.push('/profile');
+                }}
+                title="Settings"
+                color="secondary"
+              >
                 <Settings />
               </IconButton>
               <IconButton

@@ -57,7 +57,7 @@ const CreatePlans = ({ categories, videos }) => {
     });
 
     if (postResponse.ok) {
-      alert('Pland created successfully');
+      alert('Plan created successfully');
     } else {
       alert('Error creating plan');
       console.log(postResponse);

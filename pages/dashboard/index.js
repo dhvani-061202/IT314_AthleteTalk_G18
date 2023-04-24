@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import '@fontsource/roboto/300.css';
 
 const Dashboard = ({ user }) => {

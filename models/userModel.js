@@ -46,6 +46,9 @@ const userSchema = new mongoose.Schema({
   passwordResetExpires: {
     type: Date,
   },
+  imageUrl: {
+    type: String,
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -54,6 +57,11 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined;
 
+  next();
+});
+
+userSchema.pre('save', async function (next) {
+  this.imageUrl = `https://api.dicebear.com/6.x/micah/svg?seed=${this.name}+`;
   next();
 });
 

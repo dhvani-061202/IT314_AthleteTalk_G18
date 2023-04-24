@@ -40,7 +40,11 @@ const SideNav = (props) => {
         <Avatar
           sx={styles.avatar}
           alt="Channel Name"
-          src={`https://api.dicebear.com/6.x/micah/svg?seed=${user?.name}+`}
+          src={
+            user && user.imageUrl
+              ? user.imageUrl
+              : `https://api.dicebear.com/6.x/micah/svg?seed=${user?.name}+`
+          }
         />
         {!collapsed && (
           <Typography variant="body2" sx={styles.yourChannel}>
@@ -136,8 +140,8 @@ const styles = {
     flexDirection: 'column',
   },
   avatar: {
-    width: '40%',
-    height: 'auto',
+    width: '150px',
+    height: '150px',
     // borderRadius: 0,
   },
   yourChannel: {
