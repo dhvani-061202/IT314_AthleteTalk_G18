@@ -1,9 +1,13 @@
 import { Avatar, Box, Button, Tooltip, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import ScrollableFeed from 'react-scrollable-feed';
 import AuthContext from '../store/auth-context';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+// import { io } from 'socket.io-client';
 
+// const ENDPOINT = `http://localhost:3000/api/socket`;
+// var socket = io(),
+//   selectedChatCompare;
 const isSameSenderMargin = (messages, m, i, userId) => {
   // console.log(i === messages.length - 1);
 
@@ -53,10 +57,26 @@ const getSenderFull = (loggedUser, users) => {
 };
 
 const ScrollableChat = ({ messages }) => {
+  //   useEffect(() => {
+  //     socketInitializer();
+
+  //     return () => {
+  //       if (socket) {
+  //         socket.disconnect();
+  //       }
+  //     };
+  //   }, []);
   const authContext = useContext(AuthContext);
   const user = authContext.user;
+  //   const [socketConnected, setSocketConnected] = useState(false);
 
-  console.log(messages);
+  //   async function socketInitializer() {
+  //     console.log('creating socket connection');
+  //     await fetch('/api/socket');
+
+  //     socket = io();
+  //     socket.emit('setup', user);
+  //   }
 
   return (
     <ScrollableFeed>

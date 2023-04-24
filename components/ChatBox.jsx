@@ -9,7 +9,36 @@ import {
 import React, { useState, useEffect } from 'react';
 import ScrollableChat from './ScrollableChat';
 
+import { io } from 'socket.io-client';
+import { useContext } from 'react';
+import AuthContext from '../store/auth-context';
+
+const ENDPOINT = `http://localhost:3000/api/socket`;
+var socket = io(),
+  selectedChatCompare;
+
 const ChatBox = ({ selectedChat }) => {
+  const authContext = useContext(AuthContext);
+  const user = authContext.user;
+  useEffect(() => {
+    socketInitializer();
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, [user]);
+
+  async function socketInitializer() {
+    console.log('creating socket connection');
+    await fetch('/api/socket');
+
+    socket = io();
+    socket.emit('setup', user);
+  }
+
+  const [socketConnected, setSocketConnected] = useState(false);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
@@ -35,6 +64,8 @@ const ChatBox = ({ selectedChat }) => {
         const data = await responseData.json();
         console.log(data);
 
+        socket.emit('new message', data);
+
         setMessages([...messages, data]);
       } catch (error) {}
     }
@@ -56,6 +87,7 @@ const ChatBox = ({ selectedChat }) => {
         setMessages(data);
         console.log(data);
         setLoading(false);
+        socket.emit('join chat', selectedChat._id);
       } catch (error) {}
     }
   };
@@ -65,7 +97,22 @@ const ChatBox = ({ selectedChat }) => {
 
   useEffect(() => {
     fetchMessages();
+
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on('message received', (newMessage) => {
+      if (
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        selectedChatCompare._id !== newMessage.chat._id
+      ) {
+        // give notification
+      } else {
+        setMessages([...messages, newMessage]);
+      }
+    });
+  });
 
   return (
     <Paper
