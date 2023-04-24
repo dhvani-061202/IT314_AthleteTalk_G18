@@ -12,8 +12,9 @@ import ScrollableChat from './ScrollableChat';
 import { io } from 'socket.io-client';
 import { useContext } from 'react';
 import AuthContext from '../store/auth-context';
+import server from '../server';
 
-const ENDPOINT = `http://localhost:3000/api/socket`;
+const ENDPOINT = `${server}/api/socket`;
 var socket = io(),
   selectedChatCompare;
 
@@ -32,7 +33,7 @@ const ChatBox = ({ selectedChat }) => {
 
   async function socketInitializer() {
     console.log('creating socket connection');
-    await fetch('/api/socket');
+    await fetch(`${server}/api/socket`);
 
     socket = io();
     socket.emit('setup', user);
