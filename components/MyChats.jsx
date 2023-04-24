@@ -11,10 +11,6 @@ import React from 'react';
 import NewGroupChatDialog from './NewGroupChatDialog';
 
 const MyChats = ({ chats, setActiveChatBox, activeChatBox, setAllChats }) => {
-  const handleChatSelect = (e) => {
-    setActiveChatBox(e.target.value);
-  };
-
   return (
     <Paper elevation={1} sx={{ height: '100%' }}>
       <Box
@@ -36,25 +32,28 @@ const MyChats = ({ chats, setActiveChatBox, activeChatBox, setAllChats }) => {
         <NewGroupChatDialog setAllChats={setAllChats} />
       </Box>
       <hr style={{ width: '80%' }} />
-      {chats.map((chat) => {
-        return (
-          <Box key={chat._id} paddingLeft={2} paddingRight={2} paddingTop={1}>
-            <Button
-              variant="standard"
-              fullWidth
-              sx={{
-                justifyContent: 'left',
-                backgroundColor:
-                  activeChatBox === chat.chatName ? '#74b9ff' : '#eee',
-              }}
-              value={chat.chatName}
-              onClick={handleChatSelect}
-            >
-              {chat.chatName}
-            </Button>
-          </Box>
-        );
-      })}
+      {chats &&
+        chats.map((chat) => {
+          return (
+            <Box key={chat._id} paddingLeft={2} paddingRight={2} paddingTop={1}>
+              <Button
+                variant="standard"
+                fullWidth
+                sx={{
+                  justifyContent: 'left',
+                  backgroundColor:
+                    activeChatBox === chat.chatName ? '#74b9ff' : '#eee',
+                }}
+                value={chat.chatName}
+                onClick={(e) => {
+                  setActiveChatBox(chat);
+                }}
+              >
+                {chat.chatName}
+              </Button>
+            </Box>
+          );
+        })}
     </Paper>
   );
 };

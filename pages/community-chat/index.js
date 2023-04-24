@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 const CommunityChat = ({ chats }) => {
   // console.log(chats);
-  const [activeChatBox, setActiveChatBox] = useState('');
+  const [activeChatBox, setActiveChatBox] = useState({});
   const [allChats, setAllChats] = useState(chats);
 
   return (
@@ -39,20 +39,31 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const chat = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${req.cookies.jwt}`,
-    },
-  });
+  try {
+    const chat = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.cookies.jwt}`,
+      },
+    });
 
-  const chatData = await chat.json();
+    if (!chat.ok) {
+      throw new Error('something went wrong');
+    }
 
+    const chatData = await chat.json();
+
+    return {
+      props: {
+        chats: chatData.data.chats,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
   return {
-    props: {
-      chats: chatData.data.chats,
-    },
+    props: {},
   };
 }
 
