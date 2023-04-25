@@ -217,4 +217,73 @@ export default function NewGroupChatDialog({ setAllChats }) {
                 );
               })}
             </Box>
+            {/* render list of users */}
+            {loading && <p>Loading...</p>}
+            {!loading &&
+              queriedUsers &&
+              queriedUsers.slice(0, 4).map((user) => {
+                return (
+                  <Box
+                    key={user._id}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: '#f0f0f0',
+                      padding: '5px',
+                      borderRadius: '5px',
+                      marginTop: '5px',
+                    }}
+                  >
+                    <Avatar
+                      sx={{ width: '30px', height: '30px' }}
+                      src={`https://api.dicebear.com/6.x/micah/svg?seed=${user?.name}+`}
+                    />
+                    <Typography variant="body1">{user.name}</Typography>
+                    {!selectedUsers.some((u) => u.name === user.name) && (
+                      <Button
+                        sx={{ width: '90px' }}
+                        variant="outlined"
+                        onClick={(e) => {
+                          setSelectedUsers([
+                            ...selectedUsers,
+                            { name: user.name, id: user._id },
+                          ]);
+                        }}
+                      >
+                        Add
+                      </Button>
+                    )}
+                    {selectedUsers.some((u) => u.name === user.name) && (
+                      <Button
+                        sx={{ width: '90px' }}
+                        variant="contained"
+                        onClick={(e) => {
+                          setSelectedUsers(
+                            selectedUsers.filter((u) => user.name !== u.name)
+                          );
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    )}
+                  </Box>
+                );
+              })}
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSubmit} autoFocus>
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <SimpleSnackbar
+        open={openSnackbar}
+        handleClose={onClose}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
+    </div>
+  );
 }
