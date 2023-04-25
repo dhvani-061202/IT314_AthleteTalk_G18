@@ -37,11 +37,13 @@ const theme = createTheme();
 
 export default function SignInSide() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const authCtx = React.useContext(AuthContext);
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const data = new FormData(event.currentTarget);
     const body = {
       email: data.get('email'),
@@ -71,6 +73,7 @@ export default function SignInSide() {
       console.log(errorMessage);
     }
     alert(errorMessage);
+    setIsLoading(false);
   };
 
   return (
@@ -141,6 +144,7 @@ export default function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={isLoading}
               >
                 Sign In
               </Button>
