@@ -11,6 +11,8 @@ import { useContext } from 'react';
 import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
 import AuthContext from '../store/auth-context';
 
+let collapsed;
+
 const SideNav = (props) => {
   const theme = useTheme();
   const router = useRouter();
@@ -38,7 +40,11 @@ const SideNav = (props) => {
     >
       <Box sx={styles.avatorContainer}>
         <Avatar
-          sx={styles.avatar}
+          sx={{
+            width: collapsed ? '40px' : '150px',
+            height: collapsed ? '40px' : '150px',
+            transition: '0.3s',
+          }}
           alt="Channel Name"
           src={
             user && user.imageUrl
@@ -138,11 +144,6 @@ const styles = {
     alignItems: 'center',
     my: 5,
     flexDirection: 'column',
-  },
-  avatar: {
-    width: '150px',
-    height: '150px',
-    // borderRadius: 0,
   },
   yourChannel: {
     mt: 1,
