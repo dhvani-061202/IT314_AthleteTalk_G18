@@ -82,6 +82,47 @@ const ChatBox = () => {
     }
   };
 
+  const fetchMessages = async () => {
+    if (selectedChat.chatName) {
+      setLoading(true);
+      try {
+        const responseData = await fetch(`/api/message/${selectedChat._id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+
+        const data = await responseData.json();
+
+        setMessages(data);
+        console.log(data);
+        setLoading(false);
+        socket.emit('join chat', selectedChat._id);
+      } catch (error) {}
+    }
+  };
+  const typingHandler = (e) => {
+    setNewMessage(e.target.value);
+
+    if (!socketConnected) return;
+    if (!typing) {
+      setTyping(true);
+      socket.emit('typing', selectedChat._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit('stop typing', selectedChat._id);
+        setTyping(false);
+      }
+    }, timerLength);
+  };
+
   return <div>ChatBox</div>;
 };
 
