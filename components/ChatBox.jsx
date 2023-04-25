@@ -141,7 +141,36 @@ const ChatBox = () => {
     });
   });
 
-  return <div>ChatBox</div>;
+  
+
+  return (
+    <Paper
+      elevation={1}
+      sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+    >
+      <Box>
+        <Typography
+          p={2}
+          width={'100%'}
+          height={'fit-content'}
+          alignItems={'center'}
+          variant="h4"
+        >
+          {selectedChat.chatName && selectedChat.chatName.toUpperCase()}
+        </Typography>
+      </Box>
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        justifyContent={'flex-end'}
+        p={1}
+        bgcolor={'#fff'}
+        width={'100%'}
+        height={'100%'}
+        // maxHeight={'100%'}
+        borderRadius={'lg'}
+        sx={{ overflowY: 'hidden' }}
+      >);
 };
 
 export default ChatBox;
