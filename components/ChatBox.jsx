@@ -122,6 +122,24 @@ const ChatBox = () => {
       }
     }, timerLength);
   };
+  useEffect(() => {
+    fetchMessages();
+
+    selectedChatCompare = selectedChat;
+  }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on('message received', (newMessage) => {
+      if (
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        selectedChatCompare._id !== newMessage.chat._id
+      ) {
+        // give notification
+      } else {
+        setMessages([...messages, newMessage]);
+      }
+    });
+  });
 
   return <div>ChatBox</div>;
 };
