@@ -42,9 +42,7 @@ const MyChats = ({ chats, setActiveChatBox, activeChatBox, setAllChats }) => {
                 sx={{
                   justifyContent: 'left',
                   backgroundColor:
-                    activeChatBox.chatName === chat.chatName
-                      ? '#74b9ff'
-                      : '#eee',
+                    activeChatBox._id === chat._id ? '#74b9ff' : '#eee',
                 }}
                 value={chat.chatName}
                 onClick={(e) => {

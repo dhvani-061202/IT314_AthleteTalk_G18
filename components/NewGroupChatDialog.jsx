@@ -71,7 +71,7 @@ export default function NewGroupChatDialog({ setAllChats }) {
       users: selectedUsersId,
     };
 
-    const createGroupReq = await fetch(`${server}/api/chat/group`, {
+    const createGroupReq = await fetch(`/api/chat/group`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ export default function NewGroupChatDialog({ setAllChats }) {
     setLoading(true);
 
     try {
-      const queriedUsers = await fetch(`${server}/api/users?search=${query}`, {
+      const queriedUsers = await fetch(`/api/users/find?search=${query}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

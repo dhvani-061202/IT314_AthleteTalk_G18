@@ -11,12 +11,21 @@ import server from '../../server';
 import { useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 import { useRouter } from 'next/router';
+import SimpleSnackbar from './../../components/SimpleSnackbar';
 
 const Profile = () => {
   const router = useRouter();
   const authContext = useContext(AuthContext);
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('success');
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const fetchUser = async () => {
     const response = await fetch(`/api/users`, {
@@ -37,6 +46,7 @@ const Profile = () => {
 
   const handleUpdate = async () => {
     setLoading(true);
+    setUpdating(true);
     const response = await fetch(`/api/users`, {
       method: 'PATCH',
       headers: {
@@ -51,13 +61,19 @@ const Profile = () => {
     });
 
     if (response.ok) {
+      setMessage('Profile updated successfully');
+      setSeverity('success');
+      setOpen(true);
       const data = await response.json();
       setProfile(data.user);
       authContext.updateUser(data.user);
     } else {
-      alert('Something went wrong', response);
+      setMessage('Something went wrong');
+      setSeverity('error');
+      setOpen(true);
     }
     setLoading(false);
+    setUpdating(false);
   };
 
   useEffect(() => {
@@ -107,24 +123,30 @@ const Profile = () => {
         </FormControl>
         <br></br>
         <br></br>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            router.push('/profile/category');
-          }}
-        >
-          Update Categories
-        </Button>
-        {loading && (
-          <Button disabled variant="contained" onClick={handleUpdate}>
-            Updating...
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              router.push('/profile/category');
+            }}
+          >
+            Update Categories
           </Button>
-        )}
-        {!loading && (
-          <Button variant="contained" onClick={handleUpdate}>
+
+          <Button
+            disabled={updating}
+            variant="contained"
+            onClick={handleUpdate}
+          >
             Update
           </Button>
-        )}
+        </div>
+        <SimpleSnackbar
+          open={open}
+          handleClose={handleClose}
+          message={message}
+          severity={severity}
+        />
       </Box>
     </>
   );

@@ -10,7 +10,7 @@ import {
 import theme from './../config/theme';
 import AuthContext, { AuthContextProvider } from './../store/auth-context';
 import MainLayout from '../layouts/mainLayout';
-import { Router } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import Head from 'next/head';
 import nProgress from 'nprogress';
 
@@ -22,6 +22,8 @@ function MyApp({ Component, pageProps }) {
     speed: 200,
     trickleRate: 0.01,
   });
+
+  const router = useRouter();
 
   const [loading, setLoading] = React.useState(false);
   Router.events.on('routeChangeStart', (url) => {
@@ -45,6 +47,7 @@ function MyApp({ Component, pageProps }) {
                 rel="stylesheet"
                 href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
               />
+              <title>AthleteTalk - The goto platform for getting peace</title>
             </Head>
             {Component.getLayout(<Component {...pageProps} />)}
           </ProSidebarProvider>
@@ -64,6 +67,16 @@ function MyApp({ Component, pageProps }) {
               rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
             />
+            <title>
+              AthleteTalk{' '}
+              {router.pathname
+                .split('/')
+                .map(
+                  (p) =>
+                    p.substr(0, 1).toUpperCase() + p.substr(1).toLowerCase()
+                )
+                .join(' | ')}
+            </title>
           </Head>
           <MainLayout>{<Component {...pageProps} />}</MainLayout>
         </ProSidebarProvider>

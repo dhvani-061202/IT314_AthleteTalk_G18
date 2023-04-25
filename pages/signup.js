@@ -69,7 +69,7 @@ export default function SignUp() {
       //set the token here...
       authCtx.login(responseData.token, responseData.data.user);
       alert('User created successfully!');
-      router.push('/dashboard');
+      router.push('/profile/category');
       return;
     }
     let errorMessage = 'Some error occured! Try again later.';

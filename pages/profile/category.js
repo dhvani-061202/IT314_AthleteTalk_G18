@@ -1,7 +1,16 @@
-import { Button, Card, CardContent, Grid, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  Icon,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 import { useState } from 'react';
 import SimpleSnackbar from './../../components/SimpleSnackbar';
+import { useRouter } from 'next/router';
+import { ArrowBack, Backpack } from '@mui/icons-material';
 
 const colors = [
   '#f44336',
@@ -29,6 +38,8 @@ const colors = [
 ];
 
 const category = ({ categories, userCategories }) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
@@ -55,6 +66,7 @@ const category = ({ categories, userCategories }) => {
   };
 
   const handleUpdateCategory = async () => {
+    setLoading(true);
     const updatedCategoriesResponse = await fetch(`/api/users/category`, {
       method: 'PATCH',
       headers: {
@@ -77,10 +89,16 @@ const category = ({ categories, userCategories }) => {
       setSeverity('error');
       setOpen(true);
     }
+    setLoading(false);
   };
 
   return (
     <div>
+      <Button variant={'outlined'} onClick={() => router.push('/profile')}>
+        <Icon component={ArrowBack} />
+      </Button>
+      <br></br>
+      <br></br>
       <Grid container spacing={2}>
         {categories.map((category, idx) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={category._id}>
@@ -113,7 +131,11 @@ const category = ({ categories, userCategories }) => {
       </Grid>
       <br></br>
       <br></br>
-      <Button variant={'contained'} onClick={handleUpdateCategory}>
+      <Button
+        disabled={loading}
+        variant={'contained'}
+        onClick={handleUpdateCategory}
+      >
         Update
       </Button>
       <SimpleSnackbar
