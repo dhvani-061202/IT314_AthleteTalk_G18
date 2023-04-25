@@ -49,6 +49,12 @@ const userSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
   },
+  preferredCategories: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Category',
+    },
+  ],
 });
 
 userSchema.pre('save', async function (next) {

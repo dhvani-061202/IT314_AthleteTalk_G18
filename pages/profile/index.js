@@ -10,8 +10,10 @@ import React, { useEffect, useState } from 'react';
 import server from '../../server';
 import { useContext } from 'react';
 import AuthContext from '../../store/auth-context';
+import { useRouter } from 'next/router';
 
 const Profile = () => {
+  const router = useRouter();
   const authContext = useContext(AuthContext);
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(false);
@@ -105,7 +107,14 @@ const Profile = () => {
         </FormControl>
         <br></br>
         <br></br>
-
+        <Button
+          variant="outlined"
+          onClick={() => {
+            router.push('/profile/category');
+          }}
+        >
+          Update Categories
+        </Button>
         {loading && (
           <Button disabled variant="contained" onClick={handleUpdate}>
             Updating...
