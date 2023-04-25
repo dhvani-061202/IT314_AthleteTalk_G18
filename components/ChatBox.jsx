@@ -170,7 +170,40 @@ const ChatBox = () => {
         // maxHeight={'100%'}
         borderRadius={'lg'}
         sx={{ overflowY: 'hidden' }}
-      >);
+      >
+        {/* Messages here */}
+        {loading && <p>Loading...</p>}
+        {!loading && (
+          <Box>
+            {/* Messages */}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                overflowY: 'scroll',
+                scrollbarWidth: 'none',
+                maxHeight: isTyping ? '65vh' : '72vh',
+              }}
+            >
+              <ScrollableChat messages={messages} />
+            </Box>
+            {isTyping && <p>Typing...</p>}
+            <FormControl fullWidth>
+              <TextField
+                onKeyDown={sendMessage}
+                fullWidth
+                id="outlined-basic"
+                label="Enter your message"
+                variant="outlined"
+                onChange={typingHandler}
+                value={newMessage}
+              />
+            </FormControl>
+          </Box>
+        )}
+      </Box>
+    </Paper>
+  );
 };
 
 export default ChatBox;
