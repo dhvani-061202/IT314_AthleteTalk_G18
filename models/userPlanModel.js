@@ -19,6 +19,10 @@ const userPlanSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  dayProgress: {
+    type: Number,
+    default: 0,
+  },
 });
 
 let UserPlan;

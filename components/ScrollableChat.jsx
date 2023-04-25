@@ -57,6 +57,7 @@ const getSenderFull = (loggedUser, users) => {
 };
 
 const ScrollableChat = ({ messages }) => {
+  console.log(messages);
   //   useEffect(() => {
   //     socketInitializer();
 
@@ -89,7 +90,11 @@ const ScrollableChat = ({ messages }) => {
                 <Tooltip title={m.sender.name} arrow>
                   <Avatar
                     sx={styles.avatar}
-                    src={`https://api.dicebear.com/6.x/micah/svg?seed=${m.sender?.name}+`}
+                    src={
+                      m.sender.imageUrl
+                        ? m.sender.imageUrl
+                        : `https://api.dicebear.com/6.x/micah/svg?seed=${m.sender?.name}+`
+                    }
                   />
                 </Tooltip>
               )}
