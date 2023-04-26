@@ -173,6 +173,7 @@ export default function NewGroupChatDialog({ setAllChats }) {
         <DialogContent>
           <FormControl fullWidth>
             <TextField
+              data-testid="Group Name"
               id="outlined-basic"
               label="Chat Name"
               variant="outlined"
@@ -180,6 +181,7 @@ export default function NewGroupChatDialog({ setAllChats }) {
             ></TextField>
             <br></br>
             <TextField
+              data-testid="Add People"
               id="outlined-basic"
               label="Add Users"
               variant="outlined"
@@ -243,6 +245,7 @@ export default function NewGroupChatDialog({ setAllChats }) {
                     <Typography variant="body1">{user.name}</Typography>
                     {!selectedUsers.some((u) => u.name === user.name) && (
                       <Button
+                        data-testid={user.name}
                         sx={{ width: '90px' }}
                         variant="outlined"
                         onClick={(e) => {
@@ -274,7 +277,7 @@ export default function NewGroupChatDialog({ setAllChats }) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit} autoFocus>
+          <Button data-testid="CreateMe" onClick={handleSubmit} autoFocus>
             Create
           </Button>
         </DialogActions>

@@ -97,6 +97,7 @@ function UploadVideo({ categories }) {
         <div>
           <TextField
             id="outlined-basic"
+            data-testid="title"
             label="Title"
             varient="outlined"
             value={title}
@@ -108,6 +109,7 @@ function UploadVideo({ categories }) {
         <div>
           <TextField
             id="outlined-basic"
+            data-testid="description"
             label="Description"
             varient="outlined"
             multiline
@@ -121,6 +123,7 @@ function UploadVideo({ categories }) {
         <div>
           <MultipleSelectChip
             label="Categories"
+            data-testid="categories"
             names={extractedCategories}
             personName={selectedCategories}
             setPersonName={setSelectedCategories}

@@ -187,6 +187,7 @@ const ChatBox = ({ selectedChat }) => {
                 onKeyDown={sendMessage}
                 fullWidth
                 id="outlined-basic"
+                data-testid="message"
                 label="Enter your message"
                 variant="outlined"
                 onChange={typingHandler}
