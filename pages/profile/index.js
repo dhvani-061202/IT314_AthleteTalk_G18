@@ -147,3 +147,60 @@ const category = ({ categories, userCategories }) => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+  const { jwt } = req.cookies;
+
+  if (!jwt) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  try {
+    const categoriesResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/category`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+
+    const userCategoriesResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/category`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+
+    if (!categoriesResponse.ok || !userCategoriesResponse.ok) {
+      throw new Error('Something went wrong!', categoriesResponse);
+    }
+
+    const categories = await categoriesResponse.json();
+    const userCategories = await userCategoriesResponse.json();
+
+    return {
+      props: {
+        categories: categories.data.categories,
+        userCategories: userCategories.data.userCategories,
+      }, // will be passed to the page component as props
+    };
+  } catch (error) {
+    return {
+      props: {}, // will be passed to the page component as props
+    };
+  }
+}
+
+export default category;
