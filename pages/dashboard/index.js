@@ -194,3 +194,55 @@ const Dashboard = ({ plans, categories }) => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+
+  if (!req.cookies.jwt) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${req.cookies.jwt}`,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        props: {
+          plans: data.data.userPlans,
+          categories: data.data.userCategories,
+        },
+      };
+    } else {
+      throw new Error('Not authenticated!', response);
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
+
+export default Dashboard;
