@@ -1,7 +1,8 @@
 const nc = require('next-connect');
 const catchAsync = require('../../../utils/catchAsync');
-const Video = require('../../../models/videoModel');
+const Category = require('./../../../models/categoryModel');
 const authController = require('./../../../controllers/authController');
+const dbConnect = require('./../../../lib/mongoose');
 
 const handler = nc({
   onError: authController.handleError,
@@ -9,28 +10,33 @@ const handler = nc({
 });
 
 handler.get(
-  authController.protect,
   catchAsync(async (req, res, next) => {
-    const videos = await Video.find({})
-      .populate('categories')
-      .populate('uploader');
-    // console.log(videos);
+    await dbConnect();
+
+    const categories = await Category.find({});
 
     res.status(200).json({
       status: 'success',
-      results: videos.length,
+      results: categories.length,
       data: {
-        videos,
+        categories,
       },
     });
   })
 );
 
-handler.delete(
+handler.post(
   authController.protect,
   authController.restrictTo('admin', 'coach'),
   catchAsync(async (req, res, next) => {
-    res.status(200).json({ status: 'success', message: 'vidoe deleted' });
+    const newCategory = await Category.create({ name: req.body.name });
+    res.status(200).json({
+      status: 'success',
+      message: 'Category Added Successfully',
+      data: {
+        newCategory,
+      },
+    });
   })
 );
 

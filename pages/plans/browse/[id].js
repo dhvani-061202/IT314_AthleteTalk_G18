@@ -48,7 +48,7 @@ const PlanDetails = ({ plan, planVideos, taken }) => {
       alert('err');
     }
   };
-  
+
   return (
     <>
       <Button onClick={handleBack} variant="contained">

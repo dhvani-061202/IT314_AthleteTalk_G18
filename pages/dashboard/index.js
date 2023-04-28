@@ -1,3 +1,6 @@
+import React, { useContext, useState, useEffect } from 'react';
+import { Box, Grid, Icon, Paper, Typography } from '@mui/material';
+import dynamic from 'next/dynamic';
 import AuthContext from '../../store/auth-context';
 import { useRouter } from 'next/router';
 import { Download } from '@mui/icons-material';

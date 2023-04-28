@@ -5,15 +5,15 @@ import {
   IconButton,
   Toolbar,
   Typography,
-} from "@mui/material";
-import React, { useContext } from "react";
-import MenuTwoToneIcon from "@mui/icons-material/MenuTwoTone";
-import { Logout, Notifications, Settings } from "@mui/icons-material";
-import { useProSidebar } from "react-pro-sidebar";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import AuthContext from "../store/auth-context";
-import Head from "next/head";
+} from '@mui/material';
+import React, { useContext } from 'react';
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
+import { Logout, Notifications, Settings } from '@mui/icons-material';
+import { useProSidebar } from 'react-pro-sidebar';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import AuthContext from '../store/auth-context';
+import Head from 'next/head';
 
 const AppHeader = () => {
   const router = useRouter();
@@ -25,7 +25,7 @@ const AppHeader = () => {
     e.preventDefault();
 
     authCtx.logout();
-    router.push("/login");
+    router.push('/login');
   };
 
   return (
@@ -45,12 +45,13 @@ const AppHeader = () => {
 
           {loggedIn && (
             <>
-              <IconButton title="Notifications" color="secondary">
-                <Badge badgeContent={14} color="error">
-                  <Notifications />
-                </Badge>
-              </IconButton>
-              <IconButton title="Settings" color="secondary">
+              <IconButton
+                onClick={(e) => {
+                  router.push('/profile');
+                }}
+                title="Settings"
+                color="secondary"
+              >
                 <Settings />
               </IconButton>
               <IconButton
@@ -65,12 +66,12 @@ const AppHeader = () => {
 
           {!loggedIn && (
             <>
-              <Link href={"/login"}>
+              <Link href={'/login'}>
                 <Typography sx={{ mr: 3 }} variant="button" color="secondary">
                   Login
                 </Typography>
               </Link>
-              <Link href={"/signup"}>
+              <Link href={'/signup'}>
                 <Typography variant="button" color="secondary">
                   Signup
                 </Typography>
@@ -86,16 +87,16 @@ const AppHeader = () => {
 /** @type {import("@mui/material").SxProps} */
 const styles = {
   appBar: {
-    bgcolor: "#34495e",
+    bgcolor: '#34495e',
     zIndex: 1,
-    boxShadow: "none",
+    boxShadow: 'none',
     borderBottomLeftRadius: 7,
     borderBottomRightRadius: 7,
   },
   appLogo: {
     ml: 1,
     width: 40,
-    cursor: "pointer",
+    cursor: 'pointer',
   },
 };
 

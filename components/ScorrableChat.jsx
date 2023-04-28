@@ -55,8 +55,9 @@ const getSender = (loggedUser, users) => {
 const getSenderFull = (loggedUser, users) => {
   return users[0]._id === loggedUser._id ? users[1] : users[0];
 };
+
 const ScrollableChat = ({ messages }) => {
-  console.log(messages);
+  // console.log(messages);
   //   useEffect(() => {
   //     socketInitializer();
 

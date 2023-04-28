@@ -1,14 +1,14 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { LoadingButton } from "@mui/lab";
-import AuthContext from "../store/auth-context";
-import { useRouter } from "next/router";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { LoadingButton } from '@mui/lab';
+import AuthContext from '../store/auth-context';
+import { useRouter } from 'next/router';
 
 export default function FormDialog({
   label,
@@ -18,7 +18,7 @@ export default function FormDialog({
   const router = useRouter();
   const authCtx = React.useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -31,15 +31,15 @@ export default function FormDialog({
 
   const handleAdd = (e) => {
     setLoading(true);
-    if (value === "") {
+    if (value === '') {
       alert(`Please enter a value for ${textPlaceHolder}`);
       return;
     }
 
     fetch(`/api/category`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         authorization: `Bearer ${authCtx.token}`,
       },
       body: JSON.stringify({
@@ -48,16 +48,16 @@ export default function FormDialog({
     })
       .then((response) => {
         if (response.ok) {
-          setValue("");
+          setValue('');
           return response.json();
         } else {
-          alert("Error adding category");
-          throw new Error("Error adding category");
+          alert('Error adding category');
+          throw new Error('Error adding category');
         }
       })
       .then((data) => {
         setOpen(false);
-        alert("Category added successfully");
+        alert('Category added successfully');
         router.replace(router.asPath);
         changeButtonClickState((prev) => !prev);
         // console.log(data);

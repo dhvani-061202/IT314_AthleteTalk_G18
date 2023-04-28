@@ -37,11 +37,13 @@ const theme = createTheme();
 
 export default function SignInSide() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const authCtx = React.useContext(AuthContext);
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const data = new FormData(event.currentTarget);
     const body = {
       email: data.get('email'),
@@ -63,6 +65,7 @@ export default function SignInSide() {
       router.push('/dashboard');
       return;
     }
+    setIsLoading(false);
     let errorMessage = 'Some error occured! Try again later.';
     try {
       errorMessage = responseData.message;
@@ -83,7 +86,8 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundImage:
+              'url(https://images.unsplash.com/photo-1610969524483-2898ee78a41d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light'
@@ -140,15 +144,11 @@ export default function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={isLoading}
               >
                 Sign In
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
                 <Grid item>
                   <Link href="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
