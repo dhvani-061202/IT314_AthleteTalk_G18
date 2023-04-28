@@ -1,7 +1,7 @@
-import React from "react";
-import { Box } from "@mui/material";
-import AppHeader from "./../components/AppHeader";
-import SideNav from "../components/SideNav";
+import React from 'react';
+import { Box } from '@mui/material';
+import AppHeader from './../components/AppHeader';
+import SideNav from '../components/SideNav';
 
 const MainLayout = (props) => {
   return (
@@ -20,15 +20,15 @@ const MainLayout = (props) => {
 /** @type {import('@mui/material').SxProps} */
 const styles = {
   container: {
-    display: "flex",
-    bgcolor: "neutral.light",
-    height: "calc( 100% - 64px )",
+    display: 'flex',
+    bgcolor: 'neutral.light',
+    height: 'calc( 100% - 64px )',
   },
   mainSection: {
     p: 1,
-    width: "100%",
-    height: "100%",
-    overflow: "auto",
+    width: '100%',
+    height: '100%',
+    overflow: 'auto',
   },
 };
 

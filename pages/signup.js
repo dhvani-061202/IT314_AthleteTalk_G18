@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import AuthContext from '../store/auth-context';
+import { FormLabel, Radio, RadioGroup } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -37,6 +38,7 @@ const theme = createTheme();
 
 export default function SignUp() {
   const authCtx = React.useContext(AuthContext);
+  const [role, setRole] = React.useState('athlete');
   const [isLoading, setIsLoading] = React.useState();
   const router = useRouter();
   const handleSubmit = async (event) => {
@@ -49,6 +51,7 @@ export default function SignUp() {
       password: data.get('password'),
       passwordConfirm: data.get('passwordConfirm'),
       name: data.get('name'),
+      role: role === 'athlete' ? 'user' : role,
     };
 
     // console.log(body);
@@ -66,7 +69,7 @@ export default function SignUp() {
       //set the token here...
       authCtx.login(responseData.token, responseData.data.user);
       alert('User created successfully!');
-      router.push('/dashboard');
+      router.push('/profile/category');
       return;
     }
     let errorMessage = 'Some error occured! Try again later.';
@@ -77,6 +80,10 @@ export default function SignUp() {
       console.log(errorMessage);
     }
     alert(errorMessage);
+  };
+
+  const handleChange = (event) => {
+    setRole(event.target.value);
   };
 
   return (
@@ -146,6 +153,34 @@ export default function SignUp() {
                   id="passwordConfirm"
                   autoComplete="new-password-confirm"
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <FormLabel id="demo-row-radio-buttons-group-label">
+                  Role
+                </FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  value={role}
+                  onChange={handleChange}
+                >
+                  <FormControlLabel
+                    value="athlete"
+                    control={<Radio />}
+                    label="Athlete🏃🏼‍♂️"
+                  />
+                  <FormControlLabel
+                    value="coach"
+                    control={<Radio />}
+                    label="Coach👨🏼‍🏫"
+                  />
+                  <FormControlLabel
+                    value="admin"
+                    control={<Radio />}
+                    label="Admin🤵🏼"
+                  />
+                </RadioGroup>
               </Grid>
             </Grid>
             {!isLoading && (

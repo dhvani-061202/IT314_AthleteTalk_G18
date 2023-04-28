@@ -18,8 +18,7 @@ const ENDPOINT = `${server}/api/socket`;
 var socket = io(),
   selectedChatCompare;
 
-const ChatBox = () => {
-
+const ChatBox = ({ selectedChat }) => {
   const authContext = useContext(AuthContext);
   const user = authContext.user;
   useEffect(() => {
@@ -32,7 +31,6 @@ const ChatBox = () => {
     };
   }, [user]);
 
-  
   async function socketInitializer() {
     console.log('creating socket connection');
     await fetch(`/api/socket`);
@@ -44,7 +42,6 @@ const ChatBox = () => {
     socket.on('stop typing', () => setIsTyping(false));
   }
 
-  
   const [socketConnected, setSocketConnected] = useState(false);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -52,7 +49,6 @@ const ChatBox = () => {
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
 
-  
   const sendMessage = async (e) => {
     if (e.key === 'Enter' && newMessage) {
       socket.emit('stop typing', selectedChat._id);
@@ -73,7 +69,7 @@ const ChatBox = () => {
         });
 
         const data = await responseData.json();
-        console.log(data);
+        // console.log(data);
 
         socket.emit('new message', data);
 
@@ -81,7 +77,6 @@ const ChatBox = () => {
       } catch (error) {}
     }
   };
-
   const fetchMessages = async () => {
     if (selectedChat.chatName) {
       setLoading(true);
@@ -97,7 +92,7 @@ const ChatBox = () => {
         const data = await responseData.json();
 
         setMessages(data);
-        console.log(data);
+        // console.log(data);
         setLoading(false);
         socket.emit('join chat', selectedChat._id);
       } catch (error) {}
@@ -122,6 +117,7 @@ const ChatBox = () => {
       }
     }, timerLength);
   };
+
   useEffect(() => {
     fetchMessages();
 
@@ -140,8 +136,6 @@ const ChatBox = () => {
       }
     });
   });
-
-  
 
   return (
     <Paper

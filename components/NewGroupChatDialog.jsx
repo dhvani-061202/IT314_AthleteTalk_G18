@@ -98,7 +98,7 @@ export default function NewGroupChatDialog({ setAllChats }) {
 
     handleClose();
   };
-  
+
   const handleSearch = async (query) => {
     // search for users
     setSearch(query);
@@ -217,6 +217,7 @@ export default function NewGroupChatDialog({ setAllChats }) {
                 );
               })}
             </Box>
+
             {/* render list of users */}
             {loading && <p>Loading...</p>}
             {!loading &&
