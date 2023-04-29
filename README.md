@@ -1,3 +1,5 @@
+![GitHub contributors (via allcontributors.org)](https://img.shields.io/github/all-contributors/dhvani-061202/IT314_AthleteTalk_G18/main?color=green)
+
 ## Features Implemented
 
 - User Login➡️
@@ -7,9 +9,7 @@
 - Storing encrypted password using bcrypt🔑
 - Uploading videos📽️
 - Forgot & Reset Password😕
-- Update Password😵‍💫
-- Update User Data😵‍💫
+- Update Password
+- Update User Data
 - Delete User🗑️
 - Get all videos if the user is authorized🫴
-- Rate Limiter🏎️ to prevent Denial of Service Attack & reqeust spam, also providing security headers🛑, and preventing NoSQL query injection💉 and XSS(Cross site scripting) (ncHandler.js)
-- few more changes
